@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "MinGW-w64",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/APP",
+                "${workspaceFolder}/Drivers/inc",
+                "${workspaceFolder}/emWin_Config",
+                "${workspaceFolder}/emWin_GUI",
+                "${workspaceFolder}/emWin_Lib/inc",
+                "${workspaceFolder}/Libraries/STM32F4xx_StdPeriph_Driver/inc",
+                "${workspaceFolder}/System",
+                "${workspaceFolder}/System/Include",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1/include",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1/include-fixed",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/arm-none-eabi/lib",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/arm-none-eabi/include",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/arm-none-eabi/include/ssp",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/arm-none-eabi/include/sys",
+                "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/arm-none-eabi/include/c++/7.3.1"
+            ],
+            "defines": [
+                "STM32F40_41xxx",
+                "USE_STDPERIPH_DRIVE",
+                "HSE_VALUE=24000000",
+                "ARM_MATH_CM4",
+                "ARM_MATH_MATRIX_CHECK",
+                "__VFP_FP__"
+            ],
+            "compilerPath": "C:/GNU_Tools_Arm_Embedded/7-2018-q2-update/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
