@@ -12,7 +12,7 @@ ErrorStatus SSDLCDStatus = ERROR; //标记SSDLCD驱动IC初始化是否正常 0�
   * @param  None
   * @retval None
   */
-void SSDFSMC_Init(uint8_t HighStatus)
+static void SSDFSMC_Init(uint8_t HighStatus)
 {
   FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMReadStructure;
@@ -65,7 +65,7 @@ void SSDFSMC_Init(uint8_t HighStatus)
   FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState; //等待时序配置 (Wait timing configuration) NWAIT 信号指示存储器中的数据是否有效，或者在同步模式下访问 Flash 时是否必须插入等待周期。
   FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;              //写入使能位 (Write enable bit) 存储器写使能
   FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;                     //同步模式 等待使能位 (Wait enable bit) 使能/禁止在同步模式下访问 Flash 时通过 NWAIT 信号插入等待周期
-  FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Enable;                  //扩展模式使能 (Extended mode enable)
+  FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Enable;                  //扩展模式使能 (Extended mode enable) 使能后可以选择A B C D模式，否则根据外设类型自动在1或者2模式下
   FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;         //异步传输期间的等待信号 (Wait signal during asynchronous transfers)
   FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;                     //同步模式 写入突发使能 (Write burst enable)
   FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMReadStructure;       //读写时序
@@ -74,7 +74,7 @@ void SSDFSMC_Init(uint8_t HighStatus)
   //FSMC_NORSRAMDeInit(FSMC_Bank1_NORSRAM4);
   FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, DISABLE);
   FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure); //初始化FSMC配置
-  FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE); // 使能BANK1    新版用NE4
+  FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE); //使能BANK1 NE4
 }
 
 /**
@@ -82,7 +82,7 @@ void SSDFSMC_Init(uint8_t HighStatus)
   * @param  None
   * @retval None
   */
-void SSDLCD_WriteCommand(uint16_t SSDCommand)
+static void SSDLCD_WriteCommand(uint16_t SSDCommand)
 {
   *(__IO uint16_t *)SSDLCD_COMMAND = SSDCommand;
 }
@@ -92,7 +92,7 @@ void SSDLCD_WriteCommand(uint16_t SSDCommand)
   * @param  None
   * @retval None
   */
-void SSDLCD_WriteData(uint16_t SSDData)
+static void SSDLCD_WriteData(uint16_t SSDData)
 {
   *(__IO uint16_t *)SSDLCD_DATA = SSDData;
 }
@@ -102,20 +102,20 @@ void SSDLCD_WriteData(uint16_t SSDData)
   * @param  None
   * @retval None
   */
-uint16_t SSDLCD_ReadData(void)
-{
-  uint16_t SSDTemp = 0;
+// static uint16_t SSDLCD_ReadData(void)
+// {
+//   uint16_t SSDTemp = 0;
 
-  SSDTemp = *(__IO uint16_t *)SSDLCD_DATA;
-  return SSDTemp;
-}
+//   SSDTemp = *(__IO uint16_t *)SSDLCD_DATA;
+//   return SSDTemp;
+// }
 
 /**
   * @brief  SSD1963向指定寄存器写入指定长度数据
   * @param  None
   * @retval None
   */
-void SSDLCD_WriteCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SSDDataCount)
+static void SSDLCD_WriteCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SSDDataCount)
 {
   *(__IO uint16_t *)SSDLCD_COMMAND = SSDCommand;
 
@@ -131,7 +131,7 @@ void SSDLCD_WriteCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SS
   * @param  None
   * @retval None
   */
-void SSDLCD_ReadCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SSDDataCount)
+static void SSDLCD_ReadCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SSDDataCount)
 {
   *(__IO uint16_t *)SSDLCD_COMMAND = SSDCommand;
   STM32Delay_us(5);
@@ -147,7 +147,7 @@ void SSDLCD_ReadCommandData(uint16_t SSDCommand, uint16_t *SSDData, uint16_t SSD
   * @param  None
   * @retval None
   */
-void SSDLCD_REST(void)
+static void SSDLCD_REST(void)
 {
   GpioLCDSSDControl(DISABLE);
   STM32Delay_ms(100);
@@ -304,6 +304,7 @@ ErrorStatus SSDLCD_Init(void)
     TempData[0] = 0x00;
     SSDLCD_WriteCommandData(SSD_set_dbc_conf, TempData, 1); //设置LCD自动白平衡
 
+    //GPIO
     TempData[0] = 0x01;
     TempData[1] = 0x01;
     SSDLCD_WriteCommandData(SSD_set_gpio_conf, TempData, 2); //GPIO设置 0x00B8
@@ -332,19 +333,18 @@ void SSDLCD_BL(uint16_t Backlight)
   TempWriteData[3] = 0x00;      //
   TempWriteData[4] = 0x00;      //
   TempWriteData[5] = 0x00;      //
-  SSDLCD_ReadCommandData(0x00BF, TempReadData, 6);
+  SSDLCD_ReadCommandData(SSD_get_pwm_conf, TempReadData, 6);
   do
   {
-    SSDLCD_WriteCommandData(0x00BE, TempWriteData, 6); //GPIO设置 0x00B8
+    SSDLCD_WriteCommandData(SSD_set_pwm_conf, TempWriteData, 6); //GPIO设置 0x00B8
     STM32Delay_ms(10);
-    SSDLCD_ReadCommandData(0x00BF, TempReadData, 6);
+    SSDLCD_ReadCommandData(SSD_get_pwm_conf, TempReadData, 6);
   } while (SSDLCDStatus && (TempWriteData[0] != TempReadData[0] || TempWriteData[1] != TempReadData[1] || TempWriteData[2] != TempReadData[2] || TempWriteData[3] != TempReadData[3] || TempWriteData[4] != TempReadData[4] || TempWriteData[5] != TempReadData[5]));
 }
 
 /**
   * @brief  用固定颜色清屏函数.
-  * @param
-    Color: 颜色控制参数RGB565
+  * @param  Color: 颜色控制参数RGB565
   * @retval None
   */
 void SSDLCD_Clear(uint16_t Color)
@@ -354,17 +354,85 @@ void SSDLCD_Clear(uint16_t Color)
   TempData[0] = 0x00;
   TempData[1] = 0x00;
   TempData[2] = (SSD_HOR_RESOLUTION - 1) >> 8;
-  TempData[3] = (SSD_HOR_RESOLUTION - 1) & 0xFF;
-  SSDLCD_WriteCommandData(0x002A, TempData, 4); //设置LCD显示区域X轴的坐标范围
+  TempData[3] = (SSD_HOR_RESOLUTION - 1) & 0x00FF;
+  SSDLCD_WriteCommandData(SSD_set_column_address, TempData, 4); //设置LCD显示区域X轴的坐标范围
 
   TempData[0] = 0x00;
   TempData[1] = 0x00;
   TempData[2] = (SSD_VER_RESOLUTION - 1) >> 8;
   TempData[3] = (SSD_VER_RESOLUTION - 1) & 0x00FF;
-  SSDLCD_WriteCommandData(0x002B, TempData, 4); //设置LCD显示区域Y轴的坐标范围
+  SSDLCD_WriteCommandData(SSD_set_page_address, TempData, 4); //设置LCD显示区域Y轴的坐标范围
 
-  SSDLCD_WriteCommand(0x002C); //设置LCD显示区域X轴的坐标范围
+  SSDLCD_WriteCommand(SSD_write_memory_start); //设置LCD显示区域X轴的坐标范围
   for (uint16_t i = 0; i < SSD_VER_RESOLUTION; i++)
     for (uint16_t j = 0; j < SSD_HOR_RESOLUTION; j++)
+      SSDLCD_WriteData(Color);
+}
+
+/**
+  * @brief  用固定颜色充填区域函数.
+  * @param  x1
+  * @param  y1
+  * @param  x2
+  * @param  y2
+  * @retval None
+  */
+void SSDLCD_Area_Set(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+{
+  uint16_t TempData[4] = {0};
+
+  TempData[0] = ((x1 - 1) >> 8) & 0x00FF;
+  TempData[1] = (x1 - 1) & 0x00FF;
+  TempData[2] = ((x2 - 1) >> 8) & 0x00FF;
+  TempData[3] = (x2 - 1) & 0x00FF;
+  SSDLCD_WriteCommandData(SSD_set_column_address, TempData, 4); //设置LCD显示区域X轴的坐标范围
+
+  TempData[0] = ((y1 - 1) >> 8) & 0x00FF;
+  TempData[1] = (y1 - 1) & 0x00FF;
+  TempData[2] = ((y2 - 1) >> 8) & 0x00FF;
+  TempData[3] = (y2 - 1) & 0x00FF;
+  SSDLCD_WriteCommandData(SSD_set_page_address, TempData, 4); //设置LCD显示区域Y轴的坐标范围
+
+  SSDLCD_WriteCommand(SSD_write_memory_start); //设置LCD显示区域X轴的坐标范围
+}
+
+/**
+  * @brief  用固定颜色充填区域函数.
+  * @param  Color: 颜色控制参数RGB565
+  * @retval None
+  */
+void SSDLCD_Area_Colur(uint16_t Color)
+{
+  SSDLCD_WriteData(Color);
+}
+
+/**
+  * @brief  用固定颜色充填区域函数.
+  * @param  x1
+  * @param  y1
+  * @param  x2
+  * @param  y2
+  * @param  Color: 颜色控制参数RGB565
+  * @retval None
+  */
+void SSDLCD_Area_Fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint16_t Color)
+{
+  uint16_t TempData[4] = {0};
+
+  TempData[0] = ((x1 - 1) >> 8) & 0x00FF;
+  TempData[1] = (x1 - 1) & 0x00FF;
+  TempData[2] = ((x2 - 1) >> 8) & 0x00FF;
+  TempData[3] = (x2 - 1) & 0x00FF;
+  SSDLCD_WriteCommandData(SSD_set_column_address, TempData, 4); //设置LCD显示区域X轴的坐标范围
+
+  TempData[0] = ((y1 - 1) >> 8) & 0x00FF;
+  TempData[1] = (y1 - 1) & 0x00FF;
+  TempData[2] = ((y2 - 1) >> 8) & 0x00FF;
+  TempData[3] = (y2 - 1) & 0x00FF;
+  SSDLCD_WriteCommandData(SSD_set_page_address, TempData, 4); //设置LCD显示区域Y轴的坐标范围
+
+  SSDLCD_WriteCommand(SSD_write_memory_start); //设置LCD显示区域X轴的坐标范围
+  for (uint16_t i = 0; i < (x2 - x1); i++)
+    for (uint16_t j = 0; j < (y2 - y1); j++)
       SSDLCD_WriteData(Color);
 }

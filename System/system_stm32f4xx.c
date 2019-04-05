@@ -1265,7 +1265,7 @@ void SystemInit_ExtMemCtl(void)
   //FSMC_WaitSignalActive_BeforeWaitState; //等待时序配置 (Wait timing configuration) NWAIT 信号指示存储器中的数据是否有效，或者在同步模式下访问 Flash 时是否必须插入等待周期。
   //FSMC_WriteOperation_Enable;            //写入使能位 (Write enable bit) 存储器写使能
   //FSMC_WaitSignal_Disable;               //同步模式 等待使能位 (Wait enable bit) 使能/禁止在同步模式下访问 Flash 时通过 NWAIT 信号插入等待周期
-  //FSMC_ExtendedMode_Disable;             //扩展模式使能 (Extended mode enable)
+  //FSMC_ExtendedMode_Disable;             //扩展模式使能 (Extended mode enable) 使能后可以选择A B C D模式，否则根据外设类型自动在1或者2模式下
   //FSMC_AsynchronousWait_Disable;         //异步传输期间的等待信号 (Wait signal during asynchronous transfers)
   //FSMC_WriteBurst_Disable;               //同步模式 写入突发使能 (Write burst enable)
 
@@ -1345,25 +1345,35 @@ void SystemInit_ExtMemCtl(void)
   register uint32_t tmpreg = 0, timeout = 0xFFFF;
   register uint32_t index;
 
+  /*复用引脚
+  1、WE写使能SDCLK
+      GPIOC0
+      GPIOH5
+  2、CKE时钟使能SDCKE0 CKE时钟使能SDCKE1; CS片选SDNE0 CS片选SDNE1
+      GPIOH2           GPIOH7            GPIOH3      GPIOH6
+      GPIOC3           GPIOB5            GPIOC2      GPIOB6
+  3、如果使用32数据线要定义
+  GPIOH8~GPIOH15  GPIOI0~GPIOI3 GPIOI6~GPIOI7 GPIOI9~GPIOI10
+  */
   /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI interface 
       clock */
   RCC->AHB1ENR |= 0x000001FC;
   
   /* Connect PCx pins to FMC Alternate function */
-  GPIOC->AFR[0]  = 0x0000000c;
-  GPIOC->AFR[1]  = 0x00007700;
+  GPIOC->AFR[0]  = 0x0000000C;//GPIOC 0 AF12 AF12(FMC SDIO OTG_HS) WE写使能 也可以用GPIOH5
+  GPIOC->AFR[1]  = 0x00000000;//GPIOC->AFR[1]  = 0x00007700;//GPIOC 10 11 AF7 AF7(USART1 2 3)//取消USART初始化
   /* Configure PCx pins in Alternate function mode */  
-  GPIOC->MODER   = 0x00a00002;
+  GPIOC->MODER   = 0x00000002;//GPIOC->MODER   = 0x00A00002;//10: Alternate function mode
   /* Configure PCx pins speed to 50 MHz */  
-  GPIOC->OSPEEDR = 0x00a00002;
+  GPIOC->OSPEEDR = 0x00000002;//GPIOC->OSPEEDR = 0x00A00002;
   /* Configure PCx pins Output type to push-pull */  
   GPIOC->OTYPER  = 0x00000000;
   /* No pull-up, pull-down for PCx pins */ 
-  GPIOC->PUPDR   = 0x00500000;
+  GPIOC->PUPDR   = 0x00000000;//GPIOC->PUPDR   = 0x00500000;
   
   /* Connect PDx pins to FMC Alternate function */
-  GPIOD->AFR[0]  = 0x000000CC;
-  GPIOD->AFR[1]  = 0xCC000CCC;
+  GPIOD->AFR[0]  = 0x000000CC;//GPIOD 0 1 AF12 AF12(FMC SDIO OTG_HS) DQ数据信号线
+  GPIOD->AFR[1]  = 0xCC000CCC;//GPIOD 8 9 10 14 15 AF12 AF12(FMC SDIO OTG_HS) DQ数据信号线
   /* Configure PDx pins in Alternate function mode */  
   GPIOD->MODER   = 0xA02A000A;
   /* Configure PDx pins speed to 50 MHz */  
@@ -1374,8 +1384,8 @@ void SystemInit_ExtMemCtl(void)
   GPIOD->PUPDR   = 0x00000000;
 
   /* Connect PEx pins to FMC Alternate function */
-  GPIOE->AFR[0]  = 0xC00000CC;
-  GPIOE->AFR[1]  = 0xCCCCCCCC;
+  GPIOE->AFR[0]  = 0xC00000CC;//GPIOE 0 1 7 AF12 AF12(FMC SDIO OTG_HS) DQM1数据掩码 DQM0数据掩码 (GPIOE7 DQ数据信号线)
+  GPIOE->AFR[1]  = 0xCCCCCCCC;//GPIOE 8 9 10 11 12 13 14 15 AF12 AF12(FMC SDIO OTG_HS) DQ数据信号线
   /* Configure PEx pins in Alternate function mode */ 
   GPIOE->MODER   = 0xAAAA800A;
   /* Configure PEx pins speed to 50 MHz */ 
@@ -1386,8 +1396,8 @@ void SystemInit_ExtMemCtl(void)
   GPIOE->PUPDR   = 0x00000000;
 
   /* Connect PFx pins to FMC Alternate function */
-  GPIOF->AFR[0]  = 0xcccccccc;
-  GPIOF->AFR[1]  = 0xcccccccc;
+  GPIOF->AFR[0]  = 0x00CCCCCC;//GPIOF 0 1 2 3 4 5 AF12 AF12(FMC SDIO OTG_HS) A行列地址信号线
+  GPIOF->AFR[1]  = 0xCCCCC000;//GPIOF 11 12 13 14 15 AF12 AF12(FMC SDIO OTG_HS) A行列地址信号线 (GPIOF11 RAS行选通 SDNRAS)
   /* Configure PFx pins in Alternate function mode */   
   GPIOF->MODER   = 0xAA800AAA;
   /* Configure PFx pins speed to 50 MHz */ 
@@ -1398,36 +1408,47 @@ void SystemInit_ExtMemCtl(void)
   GPIOF->PUPDR   = 0x00000000;
 
   /* Connect PGx pins to FMC Alternate function */
-  GPIOG->AFR[0]  = 0xcccccccc;
-  GPIOG->AFR[1]  = 0xcccccccc;
+  GPIOG->AFR[0]  = 0x00CC0CCC;//GPIOG 0 1 2 4 5 AF12 AF12(FMC SDIO OTG_HS) A行列地址信号线 (GPIOG4 GPIOG5 BA地址线)
+  GPIOG->AFR[1]  = 0xC000000C;//GPIOG 8 15 AF12 AF12(FMC SDIO OTG_HS) GPIOG8 CLK同步时钟SDCLK; GPIOG15 CAS列选通 SDNCAS
   /* Configure PGx pins in Alternate function mode */ 
-  GPIOG->MODER   = 0xaaaaaaaa;
+  GPIOG->MODER   = 0x80020A2A;
   /* Configure PGx pins speed to 50 MHz */ 
-  GPIOG->OSPEEDR = 0xaaaaaaaa;
+  GPIOG->OSPEEDR = 0x80020A2A;
   /* Configure PGx pins Output type to push-pull */  
   GPIOG->OTYPER  = 0x00000000;
   /* No pull-up, pull-down for PGx pins */ 
   GPIOG->PUPDR   = 0x00000000;
   
   /* Connect PHx pins to FMC Alternate function */
-  GPIOH->AFR[0]  = 0x00C0CC00;
-  GPIOH->AFR[1]  = 0xCCCCCCCC;
+  #if (SDRAM_BANK_SELECT == 0x00000000)
+  //GPIOG 2 3 AF12 AF12(FMC SDIO OTG_HS) GPIOG3 CS片选,存储区域1 SDNE0;GPIOG2 CKE时钟使能,存储区域1 SDCKE0
+  GPIOH->AFR[0]  = 0x0000CC00;
+  GPIOH->AFR[1]  = 0x00000000;
   /* Configure PHx pins in Alternate function mode */ 
-  GPIOH->MODER   = 0xAAAA08A0;
+  GPIOH->MODER   = 0x000000A0;
   /* Configure PHx pins speed to 50 MHz */ 
-  GPIOH->OSPEEDR = 0xAAAA08A0;
+  GPIOH->OSPEEDR = 0x000000A0;
+  #else
+  //GPIOG 6 7 AF12 AF12(FMC SDIO OTG_HS) GPIOG6 CS片选,存储区域2 SDNE1;GPIOG7 CKE时钟使能,存储区域2 SDCKE1
+  GPIOH->AFR[0]  = 0xCC000000;
+  GPIOH->AFR[1]  = 0x00000000;
+  /* Configure PHx pins in Alternate function mode */ 
+  GPIOH->MODER   = 0x0000A000;
+  /* Configure PHx pins speed to 50 MHz */ 
+  GPIOH->OSPEEDR = 0x0000A000;
+  #endif
   /* Configure PHx pins Output type to push-pull */  
   GPIOH->OTYPER  = 0x00000000;
   /* No pull-up, pull-down for PHx pins */ 
   GPIOH->PUPDR   = 0x00000000;
   
   /* Connect PIx pins to FMC Alternate function */
-  GPIOI->AFR[0]  = 0xCCCCCCCC;
-  GPIOI->AFR[1]  = 0x00000CC0;
+  GPIOI->AFR[0]  = 0x00000000;
+  GPIOI->AFR[1]  = 0x00000000;
   /* Configure PIx pins in Alternate function mode */ 
-  GPIOI->MODER   = 0x0028AAAA;
+  GPIOI->MODER   = 0x00000000;
   /* Configure PIx pins speed to 50 MHz */ 
-  GPIOI->OSPEEDR = 0x0028AAAA;
+  GPIOI->OSPEEDR = 0x00000000;
   /* Configure PIx pins Output type to push-pull */  
   GPIOI->OTYPER  = 0x00000000;
   /* No pull-up, pull-down for PIx pins */ 
@@ -1437,53 +1458,98 @@ void SystemInit_ExtMemCtl(void)
   /* Enable the FMC interface clock */
   RCC->AHB3ENR |= 0x00000001;
   
+  //FMC_CASLatency = FMC_CAS_Latency_2;                 //CAS潜伏期 在发出读命令(命令同时包含列地址)后，需要等待几个时钟周期数据线 DQ 才会输出有效数据
+  //FMC_WriteProtection = FMC_Write_Protection_Disable; //禁止写保护
+  //FMC_SDClockPeriod = FMC_SDClock_Period_2;           //SDCLK时钟分频因子，SDCLK = HCLK/SDCLOCK_PERIOD FMC_SDCR2未使用
+  //FMC_ReadBurst = FMC_Read_Burst_Enable;              //突发读模式设置 FMC_SDCR2未使用
+  //FMC_ReadPipeDelay = FMC_ReadPipe_Delay_1;           //读延迟配置 FMC_SDCR2未使用
+  //以上与操作结果为0x00003900
+  #if (SDRAM_BANK_SELECT == 0x00000000)
   /* Configure and enable SDRAM bank1 */
-  FMC_Bank5_6->SDCR[0] = 0x000039D0;
-  FMC_Bank5_6->SDTR[0] = 0x01115351;      
-  
+  // FMC_Bank5_6->SDCR[0] = 0x000039D0;
+  FMC_Bank5_6->SDCR[0] = (0x00003900 | (SDRAM_COLUMNBITS_NUMBER | SDRAM_ROWBITS_NUMBER | SDRAM_MEMORY_WIDTH | SDRAM_BANK_NUMBER));
+  // FMC_Bank5_6->SDTR[0] = 0x01115351;
+  FMC_Bank5_6->SDTR[0] = ((SDRAM_LOAD_TO_ACTIVE_DELAY - 1) | \
+  ((SDRAM_EXIT_SELF_REFRESH_DELAY - 1) << 4) | ((SDRAM_SELF_REFRESH_TIEM - 1) << 8) | \
+  ((SDRAM_ROW_CYCLE_DELAY - 1) << 12) | ((SDRAM_WRITE_RECOVERY_TIME - 1) << 16) | \
+  ((SDRAM_RP_DELAY - 1) << 20) | ((SDRAM_RCD_DELAY - 1) << 24));
+  #else
+  /* Configure and enable SDRAM bank2 */
+  FMC_Bank5_6->SDCR[0] |= 0x00003900;
+  FMC_Bank5_6->SDCR[1] = (0x00003900 | (SDRAM_COLUMNBITS_NUMBER | SDRAM_ROWBITS_NUMBER | SDRAM_MEMORY_WIDTH | SDRAM_BANK_NUMBER));
+  FMC_Bank5_6->SDTR[0] = (((SDRAM_ROW_CYCLE_DELAY - 1) << 12) | ((SDRAM_RP_DELAY - 1) << 20) | ((SDRAM_RCD_DELAY - 1) << 24));
+  FMC_Bank5_6->SDTR[1] = ((SDRAM_LOAD_TO_ACTIVE_DELAY - 1) | ((SDRAM_EXIT_SELF_REFRESH_DELAY - 1) << 4) | \
+  ((SDRAM_SELF_REFRESH_TIEM - 1) << 8) | ((SDRAM_WRITE_RECOVERY_TIME - 1) << 16));
+  #endif
+
   /* SDRAM initialization sequence */
   /* Clock enable command */
-  FMC_Bank5_6->SDCMR = 0x00000011; 
-  tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+  #if (SDRAM_BANK_SELECT == 0x00000000)
+  FMC_Bank5_6->SDCMR = 0x00000011;
+  #else
+  FMC_Bank5_6->SDCMR = 0x00000009;
+  #endif
+  tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
   while((tmpreg != 0) & (timeout-- > 0))
   {
-    tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+    tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
   }
   
   /* Delay */
   for (index = 0; index<1000; index++);
   
   /* PALL command */
-  FMC_Bank5_6->SDCMR = 0x00000012;           
+  #if (SDRAM_BANK_SELECT == 0x00000000)
+  FMC_Bank5_6->SDCMR = 0x00000012;
+  #else
+  FMC_Bank5_6->SDCMR = 0x0000000A;
+  #endif
   timeout = 0xFFFF;
+  tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
   while((tmpreg != 0) & (timeout-- > 0))
   {
-  tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+    tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
   }
   
   /* Auto refresh command */
+  #if (SDRAM_BANK_SELECT == 0x00000000)
   FMC_Bank5_6->SDCMR = 0x00000073;
+  #else
+  FMC_Bank5_6->SDCMR = 0x0000006B;
+  #endif
   timeout = 0xFFFF;
+  tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
   while((tmpreg != 0) & (timeout-- > 0))
   {
-  tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+    tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
   }
  
   /* MRD register program */
-  FMC_Bank5_6->SDCMR = 0x00046014;
+  #if (SDRAM_BANK_SELECT == 0x00000000)
+  FMC_Bank5_6->SDCMR = (0x00000014 | ((uint32_t)(SDRAM_MODEREG_BURST_LENGTH_2 | SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL | SDRAM_MODEREG_CAS_LATENCY_2 | SDRAM_MODEREG_OPERATING_MODE_STANDARD | SDRAM_MODEREG_WRITEBURST_MODE_SINGLE) << 9));
+  #else
+  FMC_Bank5_6->SDCMR = (0x0000000C | ((uint32_t)(SDRAM_MODEREG_BURST_LENGTH_2 | SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL | SDRAM_MODEREG_CAS_LATENCY_2 | SDRAM_MODEREG_OPERATING_MODE_STANDARD | SDRAM_MODEREG_WRITEBURST_MODE_SINGLE) << 9));
+  #endif
   timeout = 0xFFFF;
+  tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
   while((tmpreg != 0) & (timeout-- > 0))
   {
-  tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
-  } 
+    tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+  }
   
   /* Set refresh count */
   tmpreg = FMC_Bank5_6->SDRTR;
-  FMC_Bank5_6->SDRTR = (tmpreg | (0x0000027C<<1));
+  FMC_Bank5_6->SDRTR = (tmpreg | (SDRAM_REFRESH_COUNT<<1));
+  timeout = 0xFFFF;
+  tmpreg = FMC_Bank5_6->SDSR & 0x00000020;
+  while((tmpreg != 0) & (timeout-- > 0))
+  {
+    tmpreg = FMC_Bank5_6->SDSR & 0x00000020; 
+  }
   
   /* Disable write protection */
-  tmpreg = FMC_Bank5_6->SDCR[0]; 
-  FMC_Bank5_6->SDCR[0] = (tmpreg & 0xFFFFFDFF);
+  // tmpreg = FMC_Bank5_6->SDCR[0]; 
+  // FMC_Bank5_6->SDCR[0] = (tmpreg & 0xFFFFFDFF);
   
 /*
   Bank1_SDRAM is configured as follow:

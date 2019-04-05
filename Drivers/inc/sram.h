@@ -8,13 +8,13 @@ extern "C"
 
 #define USE_EXRAM
 //SDRAM类型容量地址相关
-// #define SRAM_SIZE 0x0010000 //SRAM 大小, 64K 字节
-// #define SRAM_SIZE 0x0020000 //SRAM 大小, 128K 字节
-#define SRAM_SIZE 0x0040000 //SRAM 大小, 256K 字节
-// #define SRAM_SIZE 0x0080000 //SRAM 大小, 512K 字节
-// #define SRAM_SIZE 0x0100000 //SRAM 大小, 1M 字节
+// #define SRAM_SIZE 0x00010000 //SRAM 大小, 64K 字节
+// #define SRAM_SIZE 0x00020000 //SRAM 大小, 128K 字节
+#define SRAM_SIZE 0x00040000 //SRAM 大小, 256K 字节
+// #define SRAM_SIZE 0x00080000 //SRAM 大小, 512K 字节
+// #define SRAM_SIZE 0x00100000 //SRAM 大小, 1M 字节
 
-//STM32F407的bank1支持4个固定大小的存储区域, 分别是64MB
+//STM32F407的bank1支持4个固定大小的存储区域, 分别是64MB. 16位宽度存储器的时候:HADDR[25:1]对应FSMC_A[24:0],保证AHB地址总线HADDR一个地址对应一个字节
 //使用#if只能判断整数数值 FSMC_Bank1_NORSRAM1 0x00000000, FSMC_Bank1_NORSRAM2 0x00000002, FSMC_Bank1_NORSRAM3 0x00000004, FSMC_Bank1_NORSRAM4 0x00000006
 #define SRAM_BANK_SELECT 0x00000004 //0x00000000
 #if (SRAM_BANK_SELECT == 0x00000000)
@@ -24,7 +24,7 @@ extern "C"
 #elif (SRAM_BANK_SELECT == 0x00000004)
 #define SRAM_BANK_ADDR ((uint32_t)0x68000000) //SRAM 起始地址 FMC_NE3存储空间的起始地址
 #elif (SRAM_BANK_SELECT == 0x00000006)
-#define SRAM_BANK_ADDR ((uint32_t)0x6A000000) //SRAM 起始地址 FMC_NE4存储空间的起始地址
+#define SRAM_BANK_ADDR ((uint32_t)0x6C000000) //SRAM 起始地址 FMC_NE4存储空间的起始地址
 #endif
 #define SRAM_BANK_ADDRHead SRAM_BANK_ADDR                              //定义首地址
 #define SRAM_BANK_ADDREnd ((uint32_t)(SRAM_BANK_ADDR + SRAM_SIZE - 2)) //定义未地址,按照16位访问
@@ -33,7 +33,7 @@ extern "C"
 #define SRAM_ADDRSET 0x01 //地址设置阶段的持续时间
 #define ADDRHLD 0x00      //地址保持阶段的持续时间
 #define DATASET 0x03      //数据阶段的持续时间
-#define BUSTURN 0x01      //总线周转阶段的持续时间
+#define BUSTURN 0x00      //总线周转阶段的持续时间
 
     extern ErrorStatus SRAMStatus; // 标记SRAM是否正常 0 ERROR, 1正SUCCESS
 

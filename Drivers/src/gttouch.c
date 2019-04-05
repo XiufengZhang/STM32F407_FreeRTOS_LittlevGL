@@ -8,7 +8,7 @@
 #include "gpio.h"
 #include "timer.h"
 #include "gttouch.h"
-#include "GUI.h"
+// #include "GUI.h"
 
 ErrorStatus GTTouchStatus = ERROR;//标记GF触摸驱动IC初始化是否正常 0失败 1正常
 uint8_t GTTouchUpFlag = 0;//FTTouch触摸中断标记，在main函数中跟新触摸坐标数据
@@ -574,5 +574,5 @@ void  GT_IIC_ReadCoord(void)
         CoodTemp[0] = -1;
         CoodTemp[1] = -1;
     }
-    GUI_TOUCH_StoreState(CoodTemp[0], CoodTemp[1]);//使用GUI_TOUCH_StoreStateEx函数，ICONVIEW小工具不能接收释放消息
+    // GUI_TOUCH_StoreState(CoodTemp[0], CoodTemp[1]);//使用GUI_TOUCH_StoreStateEx函数，ICONVIEW小工具不能接收释放消息
 }

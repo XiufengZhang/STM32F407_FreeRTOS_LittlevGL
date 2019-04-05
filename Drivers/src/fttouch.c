@@ -8,7 +8,7 @@
 #include "gpio.h"
 #include "timer.h"
 #include "fttouch.h"
-#include "GUI.h"
+// #include "GUI.h"
 
 ErrorStatus FTTouchStatus = ERROR;//标记TF触摸驱动IC初始化是否正常 0失败 1正常
 uint8_t FTTouchUpFlag = 0;//FTTouch触摸中断标记，在main函数中跟新触摸坐标数据
@@ -467,12 +467,12 @@ void  FT_IIC_ReadCoord(void)
     
     if(CoodTemp[0] != FT_CoodData[0])
     {
-      GUI_TOUCH_StoreState(CoodTemp[1], CoodTemp[2]);
+    //   GUI_TOUCH_StoreState(CoodTemp[1], CoodTemp[2]);
     }
     else
     {
-      if(abs(CoodTemp[1] - FT_CoodData[1]) > FT_PIXEL_ERROR || abs(CoodTemp[2] - FT_CoodData[2]) > FT_PIXEL_ERROR)
-        GUI_TOUCH_StoreState(CoodTemp[1], CoodTemp[2]);
+    //   if(abs(CoodTemp[1] - FT_CoodData[1]) > FT_PIXEL_ERROR || abs(CoodTemp[2] - FT_CoodData[2]) > FT_PIXEL_ERROR)
+        // GUI_TOUCH_StoreState(CoodTemp[1], CoodTemp[2]);
     }
     
     memcpy(FT_CoodData, CoodTemp, sizeof(FT_CoodData));

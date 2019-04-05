@@ -57,7 +57,7 @@ ErrorStatus SRAMFSMC_Init(void)
   FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState; //等待时序配置 (Wait timing configuration) NWAIT 信号指示存储器中的数据是否有效，或者在同步模式下访问 Flash 时是否必须插入等待周期。
   FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;              //写入使能位 (Write enable bit) 存储器写使能
   FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;                     //同步模式 等待使能位 (Wait enable bit) 使能/禁止在同步模式下访问 Flash 时通过 NWAIT 信号插入等待周期
-  FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;                 //扩展模式使能 (Extended mode enable)
+  FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;                 //扩展模式使能 (Extended mode enable) 使能后可以选择A B C D模式，否则根据外设类型自动在1或者2模式下
   FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;         //异步传输期间的等待信号 (Wait signal during asynchronous transfers)
   FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;                     //同步模式 写入突发使能 (Write burst enable)
   FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMReadWriteStructure;

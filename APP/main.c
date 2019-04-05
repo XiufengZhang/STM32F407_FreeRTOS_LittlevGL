@@ -39,8 +39,9 @@
 #include "gttouch.h"
 #include "uart.h"
 #include "iwdg.h"
-#include "GUI.h"
-#include "GUI_Display.h"
+#include "lvgl/lvgl.h"
+// #include "GUI.h"
+// #include "GUI_Display.h"
 
 // ErrorStatus temp = ERROR;
 // GUI_PID_STATE TouchState;
@@ -119,10 +120,24 @@ int main(void)
     UART1Init();
 
     Tim4Init(); //PWM输出调整背光
-    GUI_Init(); //初始化emWin GUI
-    GUI_Delay(10);
-    Display_Initial(); //GUI初始化设置 皮肤
+    lv_init();
+    lv_port_disp_init();
+    // GUI_Init(); //初始化emWin GUI
+    // GUI_Delay(10);
+    // Display_Initial(); //GUI初始化设置 皮肤
     FTFLCD_BL(100);
+
+    lv_obj_t * scr = lv_obj_create(NULL, NULL);
+    lv_scr_load(scr); /*Load the screen*/
+
+    lv_obj_t * btn = lv_btn_create(scr, NULL);     /*lv_scr_act() Add a button the current screen*/
+    lv_obj_set_pos(btn, 10, 10);                            /*Set its position*/
+    lv_obj_set_size(btn, 100, 50);                          /*Set its size*/
+
+    lv_btn_set_action(btn, LV_BTN_ACTION_CLICK, NULL);/*Assign a callback to the button*/
+    lv_obj_t * label = lv_label_create(btn, NULL);          /*Add a label to the button*/
+    lv_label_set_text(label, "Button");                     /*Set the labels text*/
+
     //    GUIDEMO_Main();
     //    GUI_SetColor(GUI_RED);
     //    GUI_FillRect(0, 0, 199, 33);
@@ -150,7 +165,7 @@ int main(void)
     //    FTFLCD_BL(0);
     //显示自检画面
 
-    Display_Welcome(); //显示欢迎画面
+    // Display_Welcome(); //显示欢迎画面
     WatchDogInit();
 
     /* Infinite loop */
@@ -185,11 +200,13 @@ int main(void)
       {
         Timer10msFlag = 0;
         TimerProcess(); //定时器过程
+        lv_tick_inc(10);
       }
       if (Timer200msFlag)
       {
         Timer200msFlag = 0;
-        GUI_Exec(); //GUI_Delay(5);//GUI延时 类似GUI_Exec重绘无效部分 WM_InvalidateWindow
+        lv_task_handler();
+        // GUI_Exec(); //GUI_Delay(5);//GUI延时 类似GUI_Exec重绘无效部分 WM_InvalidateWindow
       }
       if (Timer1sFlag)
       {

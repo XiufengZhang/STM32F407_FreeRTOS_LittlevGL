@@ -73,7 +73,7 @@ Purpose     : Display controller initialization
 #define GUI_EXTBUFADD         SRAM_BANK_ADDRHead//外部SSD1963已经有显存，此内存作为GUI程序运行。如果是SDRAM作为显存，要减去显存地址。
 static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((at(GUI_EXTBUFADD)));
 */
-static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((section("._user_heap")));;// 32 bit aligned memory area
+static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((section("._user_heap")));// 32 bit aligned memory area
 #elif defined ( __ICCARM__ )//需要增加#include "stm32f4xx.h"引用
 /*
 #pragma location = {address|register|NAME}
@@ -92,7 +92,7 @@ static __no_init U32 aMemory[GUI_NUMBYTES / 4] @ EXRAM;// 32 bit aligned memory 
 #define GUI_EXTBUFADD         Bank1_SRAM3_ADDRHead//外部SSD1963已经有显存，此内存作为GUI程序运行。如果是SDRAM作为显存，要减去显存地址。
 static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((section("._user_heap.__at_GUI_EXTBUFADD")));
 */
-static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((section("._user_heap")));;// 32 bit aligned memory area
+static U32 aMemory[GUI_NUMBYTES / 4] __attribute__((section("._user_heap")));// 32 bit aligned memory area
 #endif
 #else
 static U32 aMemory[GUI_NUMBYTES / 4];// 32 bit aligned memory area

@@ -5,8 +5,8 @@
 #include "stm32f4xx_dma.h"
 #include "stm32f4xx_usart.h"
 #include "timer.h"
-#include "GUI.h"
-#include "GUI_Display.h"
+// #include "GUI.h"
+// #include "GUI_Display.h"
 #include "uart.h"
 
 FlagStatus UART1DMABusy = RESET;                  //存储测试板串口1状态，RESET 0不忙，SET 1忙
@@ -631,8 +631,8 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                     pSysState->State_Minor = INIT_IDLE;
                     pSysState->State_Count = 0;
                     DelTimer(TimerId);
-                    HomeWMRefresh();
-                    WelcomeToHome();
+                    // HomeWMRefresh();
+                    // WelcomeToHome();
                 }
             }
             else
@@ -670,7 +670,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                     pSysState->State_Minor = 0;
                     pSysState->State_Count = 0;
                     DelTimer(TimerId);
-                    HomeWMRefresh();
+                    // HomeWMRefresh();
                 }
             }
             else
@@ -685,7 +685,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(TimerId);
-                HomeWMRefresh();
+                // HomeWMRefresh();
             }
             else
             {
@@ -694,7 +694,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
             break;
         default:
             DelTimer(TimerId);
-            HomeWMRefresh();
+            // HomeWMRefresh();
             break;
         }
     }
@@ -826,8 +826,8 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(0);
-                HomeWMRefresh();
-                WelcomeToHome();
+                // HomeWMRefresh();
+                // WelcomeToHome();
             }
             break;
         case SYSTEM_SETTINGS:
@@ -861,7 +861,7 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(0);
-                HomeWMRefresh();
+                // HomeWMRefresh();
             }
             break;
         case SYSTEM_WORK:
@@ -869,11 +869,11 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
             pSysState->State_Minor = 0;
             pSysState->State_Count = 0;
             DelTimer(0);
-            HomeWMRefresh();
+            // HomeWMRefresh();
             break;
         default:
             DelTimer(0);
-            HomeWMRefresh();
+            // HomeWMRefresh();
             break;
         }
     }

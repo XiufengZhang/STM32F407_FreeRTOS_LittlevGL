@@ -16,7 +16,7 @@ extern "C"
     extern uint8_t Timer1sFlag;
     extern uint8_t Timer1MinFlag;
     extern volatile uint8_t STMDelayFlag;
-    extern volatile int OS_TimeMS;
+    // extern volatile int OS_TimeMS;
 
     typedef void (*TimerEventHandler_f)(uint8_t TimerId, void *arg); //函数指针，u8和指针*arg是参数
 

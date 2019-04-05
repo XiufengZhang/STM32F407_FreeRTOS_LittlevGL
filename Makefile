@@ -9,8 +9,8 @@
 ######################################
 # target
 ######################################
-TARGET = Light_GUI_STM32F407ZG
-VERSION = _V1.3.0
+TARGET = lfs_lvGL_STM32F407ZG
+VERSION = _V1.0.0
 # Linux	获取系统时间
 COMPILE_TIME = $(shell date +"_%y%m%d%H%M%S")
 
@@ -55,14 +55,103 @@ Drivers/src/spiflash.c \
 Drivers/src/ssdlcd.c \
 Drivers/src/timer.c \
 Drivers/src/uart.c \
-emWin_Config/GUI_X.c \
-emWin_Config/GUIConf.c \
-emWin_Config/LCDConf_stm3240g_eval.c \
-emWin_GUI/GUI_Display.c \
-emWin_GUI/Fonts/SongType24.c \
-emWin_GUI/Fonts/SongType32.c \
-emWin_GUI/Images/Home_Logo_100x77.c \
-emWin_GUI/Images/Home_Logo_200x154.c \
+lfs/lfs.c \
+lfs/lfs_util.c \
+lvgl/lv_core/lv_group.c \
+lvgl/lv_core/lv_indev.c \
+lvgl/lv_core/lv_lang.c \
+lvgl/lv_core/lv_obj.c \
+lvgl/lv_core/lv_refr.c \
+lvgl/lv_core/lv_style.c \
+lvgl/lv_core/lv_vdb.c \
+lvgl/lv_draw/lv_draw.c \
+lvgl/lv_draw/lv_draw_arc.c \
+lvgl/lv_draw/lv_draw_img.c \
+lvgl/lv_draw/lv_draw_label.c \
+lvgl/lv_draw/lv_draw_line.c \
+lvgl/lv_draw/lv_draw_rbasic.c \
+lvgl/lv_draw/lv_draw_rect.c \
+lvgl/lv_draw/lv_draw_triangle.c \
+lvgl/lv_draw/lv_draw_vbasic.c \
+lvgl/lv_fonts/lv_font_builtin.c \
+lvgl/lv_fonts/lv_font_dejavu_10.c \
+lvgl/lv_fonts/lv_font_dejavu_10_cyrillic.c \
+lvgl/lv_fonts/lv_font_dejavu_10_latin_sup.c \
+lvgl/lv_fonts/lv_font_dejavu_20.c \
+lvgl/lv_fonts/lv_font_dejavu_20_cyrillic.c \
+lvgl/lv_fonts/lv_font_dejavu_20_latin_sup.c \
+lvgl/lv_fonts/lv_font_dejavu_30.c \
+lvgl/lv_fonts/lv_font_dejavu_30_cyrillic.c \
+lvgl/lv_fonts/lv_font_dejavu_30_latin_sup.c \
+lvgl/lv_fonts/lv_font_dejavu_40.c \
+lvgl/lv_fonts/lv_font_dejavu_40_cyrillic.c \
+lvgl/lv_fonts/lv_font_dejavu_40_latin_sup.c \
+lvgl/lv_fonts/lv_font_monospace_8.c \
+lvgl/lv_fonts/lv_font_symbol_10.c \
+lvgl/lv_fonts/lv_font_symbol_20.c \
+lvgl/lv_fonts/lv_font_symbol_30.c \
+lvgl/lv_fonts/lv_font_symbol_40.c \
+lvgl/lv_hal/lv_hal_disp.c \
+lvgl/lv_hal/lv_hal_indev.c \
+lvgl/lv_hal/lv_hal_tick.c \
+lvgl/lv_misc/lv_anim.c \
+lvgl/lv_misc/lv_area.c \
+lvgl/lv_misc/lv_circ.c \
+lvgl/lv_misc/lv_color.c \
+lvgl/lv_misc/lv_font.c \
+lvgl/lv_misc/lv_fs.c \
+lvgl/lv_misc/lv_gc.c \
+lvgl/lv_misc/lv_ll.c \
+lvgl/lv_misc/lv_log.c \
+lvgl/lv_misc/lv_math.c \
+lvgl/lv_misc/lv_mem.c \
+lvgl/lv_misc/lv_task.c \
+lvgl/lv_misc/lv_templ.c \
+lvgl/lv_misc/lv_txt.c \
+lvgl/lv_misc/lv_ufs.c \
+lvgl/lv_objx/lv_arc.c \
+lvgl/lv_objx/lv_bar.c \
+lvgl/lv_objx/lv_btn.c \
+lvgl/lv_objx/lv_btnm.c \
+lvgl/lv_objx/lv_calendar.c \
+lvgl/lv_objx/lv_canvas.c \
+lvgl/lv_objx/lv_cb.c \
+lvgl/lv_objx/lv_chart.c \
+lvgl/lv_objx/lv_cont.c \
+lvgl/lv_objx/lv_ddlist.c \
+lvgl/lv_objx/lv_gauge.c \
+lvgl/lv_objx/lv_img.c \
+lvgl/lv_objx/lv_imgbtn.c \
+lvgl/lv_objx/lv_kb.c \
+lvgl/lv_objx/lv_label.c \
+lvgl/lv_objx/lv_led.c \
+lvgl/lv_objx/lv_line.c \
+lvgl/lv_objx/lv_list.c \
+lvgl/lv_objx/lv_lmeter.c \
+lvgl/lv_objx/lv_mbox.c \
+lvgl/lv_objx/lv_objx_templ.c \
+lvgl/lv_objx/lv_page.c \
+lvgl/lv_objx/lv_preload.c \
+lvgl/lv_objx/lv_roller.c \
+lvgl/lv_objx/lv_slider.c \
+lvgl/lv_objx/lv_spinbox.c \
+lvgl/lv_objx/lv_sw.c \
+lvgl/lv_objx/lv_ta.c \
+lvgl/lv_objx/lv_table.c \
+lvgl/lv_objx/lv_tabview.c \
+lvgl/lv_objx/lv_tileview.c \
+lvgl/lv_objx/lv_win.c \
+lvgl/lv_porting/lv_port_disp.c \
+lvgl/lv_porting/lv_port_indev.c \
+lvgl/lv_themes/lv_theme.c \
+lvgl/lv_themes/lv_theme_alien.c \
+lvgl/lv_themes/lv_theme_default.c \
+lvgl/lv_themes/lv_theme_material.c \
+lvgl/lv_themes/lv_theme_mono.c \
+lvgl/lv_themes/lv_theme_nemo.c \
+lvgl/lv_themes/lv_theme_night.c \
+lvgl/lv_themes/lv_theme_templ.c \
+lvgl/lv_themes/lv_theme_zen.c \
 Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c \
 Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c \
 Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c \
@@ -154,7 +243,9 @@ C_DEFS =  \
 -DHSE_VALUE=24000000 \
 -DARM_MATH_CM4 \
 -DARM_MATH_MATRIX_CHECK \
--D__VFP_FP__
+-D__VFP_FP__ \
+-DGCC_ARM_CM4F\
+-DLV_CONF_INCLUDE_SIMPLE
 
 # AS includes
 AS_INCLUDES = \
@@ -167,9 +258,16 @@ C_INCLUDES =  \
 -I. \
 -IAPP \
 -IDrivers/inc \
--IemWin_Config \
--IemWin_GUI \
--IemWin_Lib/inc \
+-Ilfs \
+-Ilvgl \
+-Ilvgl/lv_core \
+-Ilvgl/lv_draw \
+-Ilvgl/lv_fonts \
+-Ilvgl/lv_hal \
+-Ilvgl/lv_misc \
+-Ilvgl/lv_objx \
+-Ilvgl/lv_porting \
+-Ilvgl/lv_themes \
 -ILibraries/STM32F4xx_StdPeriph_Driver/inc \
 -ISystem \
 -ISystem/Include
@@ -196,8 +294,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 LDSCRIPT = System/gcc_link/STM32F407ZGTx_FLASH_ExtSRAM.ld
 
 # libraries
-LIBS = -lc -lm -lnosys \
-emWin_Lib/Lib/STemWin_CM4_wc32_ot.a
+LIBS = -lc -lm -lnosys
 LIBDIR =
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 

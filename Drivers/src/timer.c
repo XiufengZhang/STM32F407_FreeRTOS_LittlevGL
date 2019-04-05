@@ -4,7 +4,7 @@
 #include "gpio.h"
 //#include "iwdg.h"
 #include "timer.h"
-#include "GUI.h"
+// #include "GUI.h"
 
 uint32_t Tick_Num = 0;
 uint8_t Timer1msFlag = 0;
@@ -54,7 +54,7 @@ void TimCyclic_Init(void) //间隔时间循环中断
     static uint16_t Tick_timer = 0;
 
     Timer1msFlag = 1;
-    OS_TimeMS++;
+    // OS_TimeMS++;
     Tick_timer++;
     
     if(Tick_timer%10 == 0)
