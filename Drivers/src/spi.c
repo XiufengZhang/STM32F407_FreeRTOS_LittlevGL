@@ -26,7 +26,7 @@ void SPI1_Init(void)
     SPI_Init(SPI1, &SPI_InitStructure);                                //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
 
     SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-    //SPI_SSOutputCmd(SPI1, ENABLE);//使能硬件NSS脚输出低电平
+                           //SPI_SSOutputCmd(SPI1, ENABLE); //使能硬件NSS脚输出低电平
 }
 
 /**
@@ -88,7 +88,7 @@ void SPI2_Init(void)
     SPI_Init(SPI2, &SPI_InitStructure);                                 //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
 
     SPI_Cmd(SPI2, ENABLE); //使能SPI外设
-    //SPI_SSOutputCmd(SPI2, ENABLE);//使能硬件NSS脚输出低电平
+                           //SPI_SSOutputCmd(SPI2, ENABLE); //使能硬件NSS脚输出低电平
 }
 
 /**

@@ -44,7 +44,7 @@ extern "C"
 #define SPI_FLASH_Block32NumMax ((SPI_FLASH_TotalSize)*1024 / (SPI_FLASH_BlockSize32)) //块从0开始
 #define SPI_FLASH_Block64NumMax ((SPI_FLASH_TotalSize)*1024 / (SPI_FLASH_BlockSize64)) //块从0开始
 
-#define PHYSIC_START_ADDR 0//物理起始地址
+#define PHYSIC_START_ADDR 0                  //物理起始地址
 #define LOG_PAGE_SIZE SPI_FLASH_PageSize     //spiffs 逻辑page大小
 #define LOG_BLOCK_SIZE SPI_FLASH_BlockSize64 //spiffs 逻辑block大小
 
@@ -85,8 +85,8 @@ extern "C"
 #define W25X_4ByteAddressExit 0xE9
 
 #define BUSY_Flag 0x01 //Registers1 S0 BUSY Flag
-#define WEL_Flag 0x02 //Registers1 S1 WEL Flag
-#define ADS_Flag 0x01 //Registers3 S16 ADS Flag
+#define WEL_Flag 0x02  //Registers1 S1 WEL Flag
+#define ADS_Flag 0x01  //Registers3 S16 ADS Flag
 #define Dummy_Byte 0xFF
 
 #define Flash_STAT_ADDR 0x00 //Flash地址

@@ -175,8 +175,8 @@ extern "C"
 
     extern char UART_FilterDescrip[8][8];
 
-    extern uint8_t UART_ShutAMAU;        //快门手动自动状态 0手动 1自动，本地使用变量
-    extern uint8_t UART_ShutOnOff;       //快门运行停止，0停止 1运行，本地使用变量
+    extern uint8_t UART_ShutAMAU;  //快门手动自动状态 0手动 1自动，本地使用变量
+    extern uint8_t UART_ShutOnOff; //快门运行停止，0停止 1运行，本地使用变量
     extern SysComState_TypeDef SystemState;
 
     void UART1Init(void);

@@ -2,7 +2,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
 #include "gpio.h"
-//#include "iwdg.h"
+#include "iwdg.h"
 #include "timer.h"
 // #include "GUI.h"
 
@@ -49,35 +49,35 @@ void TimCyclic_Init(void) //间隔时间循环中断
   * @param  None
   * @retval None
   */
- void TimCyclic_Process(void)
+void TimCyclic_Process(void)
 {
     static uint16_t Tick_timer = 0;
 
     Timer1msFlag = 1;
     // OS_TimeMS++;
     Tick_timer++;
-    
-    if(Tick_timer%10 == 0)
+
+    if (Tick_timer % 10 == 0)
     {
-      Tick_Num++;
-      Timer10msFlag = 1;
+        Tick_Num++;
+        Timer10msFlag = 1;
     }
-    if(Tick_timer%200 == 0)
+    if (Tick_timer % 200 == 0)
     {
-      Timer200msFlag = 1;
+        Timer200msFlag = 1;
     }
-    if(Tick_timer%500 == 0)
+    if (Tick_timer % 500 == 0)
     {
-      Timer500msFlag = 1;
+        Timer500msFlag = 1;
     }
-    if(Tick_timer%1000 == 0)
+    if (Tick_timer % 1000 == 0)
     {
-      Timer1sFlag = 1;
+        Timer1sFlag = 1;
     }
-    if(Tick_timer>=60000)
+    if (Tick_timer >= 60000)
     {
-      Timer1MinFlag = 1;
-      Tick_timer=0;
+        Timer1MinFlag = 1;
+        Tick_timer = 0;
     }
 }
 
@@ -148,10 +148,9 @@ void STM32Delay_ms(uint16_t ms)
     TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE); //设置中断
     TIM_Cmd(TIM6, ENABLE);                     //使能定时器
     while (STMDelayFlag > 0)
-        ;
-    //{
-    //WatchDogFeed();
-    //}
+    {
+        WatchDogFeed();
+    }
 }
 
 /******************************************************************************
@@ -307,13 +306,13 @@ void Tim2Init(void) //TIM2_CH1
     TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Single); //选择单脉冲模式
     TIM_CtrlPWMOutputs(TIM2, ENABLE);
 
-    //TIM_SelectInputTrigger(TIM2, TIM_TS_TI1FP1);
-    //TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);//TIM_SlaveMode_Trigger
+    // TIM_SelectInputTrigger(TIM2, TIM_TS_TI1FP1);
+    // TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);//TIM_SlaveMode_Trigger
 
     TIM_ClearFlag(TIM2, TIM_FLAG_Update);
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); //定时器跟新中断，目的是定时器停止后复位Compare值，不复位的话会输出高电平。
-    //TIM_Cmd(TIM2, ENABLE);
+    // TIM_Cmd(TIM2, ENABLE);
 }
 
 /**
@@ -323,15 +322,15 @@ void Tim2Init(void) //TIM2_CH1
   */
 void Tim8Init(void) //TIM8_CH1 TIM8_CH2 TIM8_CH3
 {
-    //    NVIC_InitTypeDef NVIC_InitStructure;
+    // NVIC_InitTypeDef NVIC_InitStructure;
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
     TIM_OCInitTypeDef TIM_OCInitStructure;
-    //
-    //    NVIC_InitStructure.NVIC_IRQChannel=TIM8_UP_TIM13_IRQn;//单脉冲触发
-    //    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
-    //    NVIC_InitStructure.NVIC_IRQChannelSubPriority=2;
-    //    NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
-    //    NVIC_Init(&NVIC_InitStructure);
+
+    // NVIC_InitStructure.NVIC_IRQChannel = TIM8_UP_TIM13_IRQn; //单脉冲触发
+    // NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    // NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+    // NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    // NVIC_Init(&NVIC_InitStructure);
 
     TIM_TimeBaseInitStructure.TIM_Prescaler = 0x068F;               //TIMx时钟频率除数的预分频值1680(n-1)0x068F,100KHz频率
     TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up; //TIM向上计数模式
@@ -362,13 +361,13 @@ void Tim8Init(void) //TIM8_CH1 TIM8_CH2 TIM8_CH3
     TIM_SelectOnePulseMode(TIM8, TIM_OPMode_Single); //选择单脉冲模式
     TIM_CtrlPWMOutputs(TIM8, ENABLE);
 
-    //TIM_SelectInputTrigger(TIM8, TIM_TS_TI1FP1);
-    //TIM_SelectSlaveMode(TIM8, TIM_SlaveMode_Reset);//TIM_SlaveMode_Trigger
+    // TIM_SelectInputTrigger(TIM8, TIM_TS_TI1FP1);
+    // TIM_SelectSlaveMode(TIM8, TIM_SlaveMode_Reset);//TIM_SlaveMode_Trigger
 
-    //TIM_ClearFlag(TIM8, TIM_FLAG_Update);
-    //TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
-    //TIM_ITConfig(TIM8, TIM_IT_Update, ENABLE);//定时器跟新中断，目的是定时器停止后复位Compare值，不复位的话会输出高电平。
-    //TIM_Cmd(TIM8, ENABLE);
+    // TIM_ClearFlag(TIM8, TIM_FLAG_Update);
+    // TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
+    // TIM_ITConfig(TIM8, TIM_IT_Update, ENABLE);//定时器跟新中断，目的是定时器停止后复位Compare值，不复位的话会输出高电平。
+    // TIM_Cmd(TIM8, ENABLE);
 }
 
 /**
@@ -413,7 +412,7 @@ void Tim4Init(void) //TIM4_CH3
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //输出极性
     TIM_OC3Init(TIM4, &TIM_OCInitStructure);
 
-    //TIM_SelectOnePulseMode(TIM4, TIM_OPMode_Single);  //选择单脉冲模式
+    // TIM_SelectOnePulseMode(TIM4, TIM_OPMode_Single);  //选择单脉冲模式
     TIM_CtrlPWMOutputs(TIM4, ENABLE);
     TIM_Cmd(TIM4, ENABLE);
 }
@@ -433,7 +432,7 @@ void FTFLCD_BL(uint8_t TFTLCDBackLight)
         TIM_SetCompare3(TIM4, 200);
     else
         TIM_SetCompare3(TIM4, 100 + TFTLCDBackLight);
-    //TIM_Cmd(TIM4, ENABLE);//非单脉冲模式，在初始化时已经使能
+    // TIM_Cmd(TIM4, ENABLE);//非单脉冲模式，在初始化时已经使能
 }
 
 /**

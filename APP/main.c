@@ -84,10 +84,9 @@ int main(void)
     
     core_cm4.h 内核设备访问层，stm32f4xx.h中断号 地址定义等，system_stm32f4xx.c system_stm32f4xx.h初始化函数系统定义。
     
-    C/C++ Compiler -> Preprocessor 定义STM32F40_41xxx USE_STDPERIPH_DRIVER，也可以在stm32f0xx.h文件中定义。
-    
-    定义USE_STDPERIPH_DRIVER是引用"stm32f0xx_conf.h"外设配置文件
-    定义STM32F40_41xxx是确定设备类型 在system_stm32f4xx中查找可用定义
+    C/C++ Compiler -> Preprocessor 定义STM32F40_41xxx USE_STDPERIPH_DRIVER，也可以在stm32f4xx.h文件中定义。
+    定义USE_STDPERIPH_DRIVER是引用"stm32f4xx_conf.h"外设配置文件
+    定义STM32F40_41xxx是确定设备类型 在system_stm32f4xx.c中查找可用定义
     HSE_VALUE 在stm32f4xx.h 文件中定义，默认是25MHz根据实际情况更改，系统时钟频率是按照定义值计算的，不能测量实际值。
     PLL_M、PLL_N、PLL_P、PLL_Q在system_stm32f4xx.c中定义
     

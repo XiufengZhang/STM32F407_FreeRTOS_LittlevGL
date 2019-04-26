@@ -39,8 +39,8 @@ uint8_t UART_RemoteAddr = 0;
 
 char UART_FilterDescrip[8][8] = {};
 
-uint8_t UART_ShutAMAU;        //快门手动自动状态 0手动 1自动，本地使用变量
-uint8_t UART_ShutOnOff;       //快门运行停止，0停止 1运行，本地使用变量
+uint8_t UART_ShutAMAU = 0;                                                                                 //快门手动自动状态 0手动 1自动，本地使用变量
+uint8_t UART_ShutOnOff = 0;                                                                                //快门运行停止，0停止 1运行，本地使用变量
 SysComState_TypeDef SystemState = {.State_Main = SYSTEM_INIT, .State_Minor = INIT_IDLE, .State_Count = 0}; //标识系统当前状态，根据状态不同串口接收数据处理不同。
 
 /**

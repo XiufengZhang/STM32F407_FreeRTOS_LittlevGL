@@ -2,7 +2,6 @@
 #include "stm32f4xx_iwdg.h"
 #include "iwdg.h"
 
-
 /**
   * @brief  独立看门狗初始化
   * @param  no

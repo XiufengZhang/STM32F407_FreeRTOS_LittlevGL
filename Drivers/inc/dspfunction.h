@@ -1,12 +1,12 @@
 #ifndef __DSPFUNCTION_H
 #define __DSPFUNCTION_H
 
-
 #ifdef __cplusplus
- extern "C" {
+extern "C"
+{
 #endif
 
-void DSPFunction(void);
+    void DSPFunction(void);
 
 #ifdef __cplusplus
 }
