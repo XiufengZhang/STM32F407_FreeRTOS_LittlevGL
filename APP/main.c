@@ -101,6 +101,7 @@ int main(void)
     ARM_MATH_MATRIX_CHECK是库函数的参数检查开关，这里添加后就是打开。
     ARM_MATH_ROUNDING这个是库函数在运算是是否开启四舍五入的功能，这里添加，可以根据自己的需要进行配置。
     __ICCARM__、__CC_ARM、__GNUC__是不同编译器的编译配置宏定义，__ICCARM__是IAR环境,__CC_ARM是代表MDK开发环境，__GNUC__是gcc编译环境。
+    __IAR_SYSTEMS_ASM__ IAR汇编程序标识
     
     stm32f4xx_dma2d.c文件中void DMA2D_Init(DMA2D_InitTypeDef* DMA2D_InitStruct)函数，
     DMA2D->OCOLR |= ((outgreen) | (outred) | (DMA2D_InitStruct->DMA2D_OutputBlue) | (outalpha));

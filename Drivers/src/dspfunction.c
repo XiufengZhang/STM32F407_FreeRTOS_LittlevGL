@@ -3,7 +3,6 @@
 #include "stm32f4xx.h"
 #include "dspfunction.h"
 
-
 int8_t test1 = -2;
 int8_t test2 = 0;
 
