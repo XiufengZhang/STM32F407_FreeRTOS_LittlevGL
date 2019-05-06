@@ -37,6 +37,7 @@
                 "ARM_MATH_CM4",
                 "ARM_MATH_MATRIX_CHECK",
                 "__VFP_FP__",
+                "__FPU_PRESENT=1",
                 "__GNUC__",
                 "GCC_ARM_CM4F",
                 "LV_CONF_INCLUDE_SIMPLE"
