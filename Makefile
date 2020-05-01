@@ -9,7 +9,7 @@
 ######################################
 # target
 ######################################
-TARGET = lfs_lvGL_STM32F407ZG
+TARGET = Optical_GUI_STM32F407ZG
 VERSION = _V1.0.0
 # Linux	获取系统时间
 COMPILE_TIME = $(shell date +"_%y%m%d%H%M%S")
@@ -41,20 +41,20 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
-APP/main.c \
-APP/stm32f4xx_it.c \
-System/system_stm32f4xx.c \
-Drivers/src/clk.c \
-Drivers/src/gpio.c \
-Drivers/src/fttouch.c \
-Drivers/src/gttouch.c \
-Drivers/src/tsctouch.c \
-Drivers/src/iwdg.c \
-Drivers/src/spi.c \
-Drivers/src/spiflash.c \
-Drivers/src/ssdlcd.c \
-Drivers/src/timer.c \
-Drivers/src/uart.c \
+app/main.c \
+app/stm32f4xx_it.c \
+system/system_stm32f4xx.c \
+drivers/src/clk.c \
+drivers/src/gpio.c \
+drivers/src/fttouch.c \
+drivers/src/gttouch.c \
+drivers/src/tsctouch.c \
+drivers/src/iwdg.c \
+drivers/src/spi.c \
+drivers/src/spiflash.c \
+drivers/src/ssdlcd.c \
+drivers/src/timer.c \
+drivers/src/uart.c \
 lfs/lfs.c \
 lfs/lfs_util.c \
 lvgl/lv_core/lv_group.c \
@@ -152,49 +152,49 @@ lvgl/lv_themes/lv_theme_nemo.c \
 lvgl/lv_themes/lv_theme_night.c \
 lvgl/lv_themes/lv_theme_templ.c \
 lvgl/lv_themes/lv_theme_zen.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cec.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dfsdm.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dsi.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash_ramfunc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmpi2c.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_lptim.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_qspi.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spdifrx.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c \
-Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c
+libraries/STM32F4xx_StdPeriph_Driver/src/misc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cec.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dfsdm.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dsi.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash_ramfunc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmpi2c.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_lptim.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_qspi.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spdifrx.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c \
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c
 
 # ASM sources
 ASM_SOURCES =  \
-System/gcc_startup/startup_stm32f40xx.s
+system/gcc_startup/startup_stm32f40xx.s
 
 
 #######################################
@@ -250,15 +250,15 @@ C_DEFS =  \
 
 # AS includes
 AS_INCLUDES = \
--IAPP \
--ISystem \
--ISystem/Include
+-Iapp \
+-Isystem \
+-Isystem/include
 
 # C includes
 C_INCLUDES =  \
 -I. \
--IAPP \
--IDrivers/inc \
+-Iapp \
+-Idrivers/inc \
 -Ilfs \
 -Ilvgl \
 -Ilvgl/lv_core \
@@ -269,9 +269,9 @@ C_INCLUDES =  \
 -Ilvgl/lv_objx \
 -Ilvgl/lv_porting \
 -Ilvgl/lv_themes \
--ILibraries/STM32F4xx_StdPeriph_Driver/inc \
--ISystem \
--ISystem/Include
+-Ilibraries/STM32F4xx_StdPeriph_Driver/inc \
+-Isystem \
+-Isystem/include
 
 
 # compile gcc flags
@@ -292,7 +292,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = System/gcc_link/STM32F407ZGTx_FLASH_ExtSRAM.ld
+LDSCRIPT = system/gcc_link/STM32F407ZGTx_FLASH_ExtSRAM.ld
 
 # libraries
 LIBS = -lc -lm -lnosys
