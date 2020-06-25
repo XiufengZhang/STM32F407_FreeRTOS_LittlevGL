@@ -29,8 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "main.h"
-#include "clk.h"
-#include "gpio.h"
 #include "timer.h"
 #include "spiflash.h"
 #include "sram.h"
@@ -108,12 +106,12 @@ int main(void)
     改为DMA2D->OCOLR = ((outgreen) | (outred) | (DMA2D_InitStruct->DMA2D_OutputBlue) | (outalpha));
     */
 
-    CLKHSEStatus = RccInit(); //标记外部晶振启动是否正常 ERROR失败 SUCCESS正常
-    GpioInit();
+    // CLKHSEStatus = RccInit(); //标记外部晶振启动是否正常 ERROR失败 SUCCESS正常 已移到各个模块内部初始化
+    // SRAMStatus = SRAMFSMC_Init();//已移到system_stm32f4xx.c SystemInit_ExtMemCtl中初始化
+    // GpioInit(); //已移到各个模块内部初始化
     TimCyclic_Init(); //ms中断 emwin心跳
     STM32Delay_Init();
     //    Tim5Init();//编码器
-    // SRAMStatus = SRAMFSMC_Init();//已在system_stm32f4xx.c SystemInit_ExtMemCtl中初始化
     FlashStatus = SPI_FLASH_Init(); //标记串行Flash是否正常 ERROR失败 SUCCESS正常
     if (FlashStatus)
       SPI_FLASH_DataRead(); //读取Flash或者EEPROM数据

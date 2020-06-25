@@ -43,18 +43,18 @@ BUILD_DIR = build
 C_SOURCES =  \
 app/main.c \
 app/stm32f4xx_it.c \
-system/system_stm32f4xx.c \
 drivers/src/clk.c \
+drivers/src/iwdg.c \
 drivers/src/gpio.c \
+drivers/src/ssdlcd.c \
 drivers/src/fttouch.c \
 drivers/src/gttouch.c \
 drivers/src/tsctouch.c \
-drivers/src/iwdg.c \
 drivers/src/spi.c \
 drivers/src/spiflash.c \
-drivers/src/ssdlcd.c \
 drivers/src/timer.c \
 drivers/src/uart.c \
+system/system_stm32f4xx.c \
 lfs/lfs.c \
 lfs/lfs_util.c \
 lvgl/lv_core/lv_group.c \
@@ -190,7 +190,8 @@ libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c \
 libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c \
 libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c \
 libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c \
-libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c
+libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c \
+
 
 # ASM sources
 ASM_SOURCES =  \
