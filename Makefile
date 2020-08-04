@@ -39,9 +39,9 @@ BUILD_DIR = build
 
 # LIB_DIR ?= ${shell pwd}/libraries
 LIB_DIR ?= libraries
-LFS_DIR ?= lfs
-RTOS_DIR ?= rtos
 DRIVER_DIR ?= drivers
+FS_DIR ?= fs
+RTOS_DIR ?= rtos
 
 ######################################
 # source
@@ -137,7 +137,7 @@ C_INCLUDES ?=  \
 -Isystem/include
 
 include libraries/lib.mk
-include lfs/lfs.mk
+include fs/lfs.mk
 include rtos/rtos.mk
 
 # compile gcc flags

@@ -1,6 +1,24 @@
 # ignore all files in the build/ directory
 build/
 .vscode/ipch
+rtos/FreeRTOS-Kernel/portable/BCC
+rtos/FreeRTOS-Kernel/portable/CCS
+rtos/FreeRTOS-Kernel/portable/CodeWarrior
+rtos/FreeRTOS-Kernel/portable/IAR
+rtos/FreeRTOS-Kernel/portable/Keil
+rtos/FreeRTOS-Kernel/portable/MPLAB
+rtos/FreeRTOS-Kernel/portable/MSVC-MingW
+rtos/FreeRTOS-Kernel/portable/MikroC
+rtos/FreeRTOS-Kernel/portable/Paradigm
+rtos/FreeRTOS-Kernel/portable/RVDS
+rtos/FreeRTOS-Kernel/portable/Renesas
+rtos/FreeRTOS-Kernel/portable/Rowley
+rtos/FreeRTOS-Kernel/portable/SDCC
+rtos/FreeRTOS-Kernel/portable/Softune
+rtos/FreeRTOS-Kernel/portable/Tasking
+rtos/FreeRTOS-Kernel/portable/ThirdParty
+rtos/FreeRTOS-Kernel/portable/WizC
+rtos/FreeRTOS-Kernel/portable/oWatcom
 
 # Prerequisites
 *.d

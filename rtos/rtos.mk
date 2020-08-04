@@ -1,4 +1,4 @@
 KERNEL_DIR = FreeRTOS-Kernel
-include $(RTOS_DIR)/$(KERNEL_DIR)/kernel.mk
+include $(RTOS_DIR)/rtos_kernel.mk
 
 C_INCLUDES += -I$(RTOS_DIR)

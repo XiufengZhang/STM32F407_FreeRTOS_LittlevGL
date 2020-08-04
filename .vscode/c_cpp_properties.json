@@ -6,7 +6,7 @@
                 "${workspaceFolder}/",
                 "${workspaceFolder}/app",
                 "${workspaceFolder}/drivers/inc",
-                "${workspaceFolder}/lfs/littlefs",
+                "${workspaceFolder}/fs/littlefs",
                 "${workspaceFolder}/rtos/",
                 "${workspaceFolder}/rtos/FreeRTOS-Kernel/include",
                 "${workspaceFolder}/rtos/FreeRTOS-Kernel/portable/GCC/ARM_CM4F",
