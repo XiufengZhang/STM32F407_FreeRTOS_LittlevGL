@@ -37,9 +37,7 @@
 #include "gttouch.h"
 #include "uart.h"
 #include "iwdg.h"
-#include "FreeRTOS.h"
-#include "task.h"
-// #include "lvgl/lvgl.h"
+#include "lvgl/lvgl.h"
 // #include "GUI.h"
 // #include "GUI_Display.h"
 
@@ -48,42 +46,6 @@
 // uint8_t FlashTest[256] = {0};
 // uint32_t FlashTest1 = 0;
 // uint32_t FlashTest2 = 0;
-
-TaskHandle_t Task1_Handle, Task2_Handle;
-
-void task1_task()
-{
-  uint32_t testcount = xTaskGetTickCount();
-  while (testcount-xTaskGetTickCount() < 10)
-  {
-    testcount = xTaskGetTickCount();
-  }
-  
-  while (1)
-  {
-    static uint8_t test1 = 0;
-
-    test1++;
-    vTaskDelay(1000);
-  }
-}
-
-void task2_task()
-{
-  uint32_t testcount = xTaskGetTickCount();
-  while (testcount-xTaskGetTickCount() < 20)
-  {
-    testcount = xTaskGetTickCount();
-  }
-  while (1)
-  {
-    static uint8_t test2 = 0;
-
-    test2++;
-    vTaskDelay(1500);
-  }
-}
-
 
 /** @addtogroup Template_Project
   * @{
@@ -150,29 +112,29 @@ int main(void)
     TimCyclic_Init(); //ms中断 emwin心跳
     STM32Delay_Init();
     //    Tim5Init();//编码器
-    // FlashStatus = SPI_FLASH_Init(); //标记串行Flash是否正常 ERROR失败 SUCCESS正常
-    // if (FlashStatus)
-    //   SPI_FLASH_DataRead(); //读取Flash或者EEPROM数据
-    // UART1Init();
+    FlashStatus = SPI_FLASH_Init(); //标记串行Flash是否正常 ERROR失败 SUCCESS正常
+    if (FlashStatus)
+      SPI_FLASH_DataRead(); //读取Flash或者EEPROM数据
+    UART1Init();
 
     Tim4Init(); //PWM输出调整背光
-    // lv_init();
-    // lv_port_disp_init();
-    // // GUI_Init(); //初始化emWin GUI
-    // // GUI_Delay(10);
-    // // Display_Initial(); //GUI初始化设置 皮肤
-    // FTFLCD_BL(100);
+    lv_init();
+    lv_port_disp_init();
+    // GUI_Init(); //初始化emWin GUI
+    // GUI_Delay(10);
+    // Display_Initial(); //GUI初始化设置 皮肤
+    FTFLCD_BL(100);
 
-    // lv_obj_t * scr = lv_obj_create(NULL, NULL);
-    // lv_scr_load(scr); /*Load the screen*/
+    lv_obj_t * scr = lv_obj_create(NULL, NULL);
+    lv_scr_load(scr); /*Load the screen*/
 
-    // lv_obj_t * btn = lv_btn_create(scr, NULL);     /*lv_scr_act() Add a button the current screen*/
-    // lv_obj_set_pos(btn, 10, 10);                            /*Set its position*/
-    // lv_obj_set_size(btn, 100, 50);                          /*Set its size*/
+    lv_obj_t * btn = lv_btn_create(scr, NULL);     /*lv_scr_act() Add a button the current screen*/
+    lv_obj_set_pos(btn, 10, 10);                            /*Set its position*/
+    lv_obj_set_size(btn, 100, 50);                          /*Set its size*/
 
-    // lv_btn_set_action(btn, LV_BTN_ACTION_CLICK, NULL);/*Assign a callback to the button*/
-    // lv_obj_t * label = lv_label_create(btn, NULL);          /*Add a label to the button*/
-    // lv_label_set_text(label, "Button");                     /*Set the labels text*/
+    lv_btn_set_action(btn, LV_BTN_ACTION_CLICK, NULL);/*Assign a callback to the button*/
+    lv_obj_t * label = lv_label_create(btn, NULL);          /*Add a label to the button*/
+    lv_label_set_text(label, "Button");                     /*Set the labels text*/
 
     //    GUIDEMO_Main();
     //    GUI_SetColor(GUI_RED);
@@ -202,12 +164,6 @@ int main(void)
     //显示自检画面
 
     // Display_Welcome(); //显示欢迎画面
-
-
-    xTaskCreate(task1_task, "Task1", 128, NULL, 2, &Task1_Handle);
-    xTaskCreate(task2_task, "Task2", 128, NULL, 3, &Task2_Handle);
-    vTaskStartScheduler();
-
     WatchDogInit();
 
     /* Infinite loop */
@@ -242,12 +198,12 @@ int main(void)
       {
         Timer10msFlag = 0;
         TimerProcess(); //定时器过程
-        // lv_tick_inc(10);
+        lv_tick_inc(10);
       }
       if (Timer200msFlag)
       {
         Timer200msFlag = 0;
-        // lv_task_handler();
+        lv_task_handler();
         // GUI_Exec(); //GUI_Delay(5);//GUI延时 类似GUI_Exec重绘无效部分 WM_InvalidateWindow
       }
       if (Timer1sFlag)

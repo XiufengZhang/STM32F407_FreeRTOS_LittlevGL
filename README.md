@@ -1,10 +1,8 @@
-# STM32F407_Optical
+# STM32F407_Optical_GUI
 
 ## 工程说明
 MCU型号：STM32F407ZG  
 外挂SARM 型号：S61WV12816DBLL-10TL
-
-光功率计GUI板
 
 硬件：测试版与量产版有2处不同
 1. SARM  测试版有S61WV12816DBLL-10TL

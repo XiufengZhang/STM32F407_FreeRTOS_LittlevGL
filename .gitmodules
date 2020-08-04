@@ -1,0 +1,9 @@
+[submodule "fs/littlefs"]
+	path = fs/littlefs
+	url = git@github.com:ARMmbed/littlefs.git
+[submodule "rtos/FreeRTOS-Kernel"]
+	path = rtos/FreeRTOS-Kernel
+	url = git@github.com:FreeRTOS/FreeRTOS-Kernel.git
+[submodule "gui/lvgl"]
+	path = gui/lvgl
+	url = git@github.com:lvgl/lvgl.git

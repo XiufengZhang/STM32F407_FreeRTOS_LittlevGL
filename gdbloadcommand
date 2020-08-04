@@ -1,0 +1,7 @@
+set height 0
+set pagination off
+set confirm off
+target remot localhost:2331
+monitor reset halt
+load
+q

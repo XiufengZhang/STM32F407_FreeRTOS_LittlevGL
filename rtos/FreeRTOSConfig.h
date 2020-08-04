@@ -63,7 +63,6 @@ extern "C" {
 #define configUSE_RECURSIVE_MUTEXES		1 //1使能递归信号量
 #define configUSE_COUNTING_SEMAPHORES	1 //1使能计数信号量
 #define configQUEUE_REGISTRY_SIZE		8 //可注册的队列和信号量的最大数量 与调试相关
-#define configUSE_TRACE_FACILITY		1 //1开启跟踪调试相关
 #define configUSE_APPLICATION_TASK_TAG	0 //1使能任务标签功能
 #define configGENERATE_RUN_TIME_STATS	0 //1使能时间统计功能
 
@@ -74,10 +73,10 @@ extern "C" {
 #define configAPPLICATION_ALLOCATED_HEAP        0//1 //1FreeRTOS的堆需要用户设置(外部SRAM SDRAM)，0编译器自动分配
 
 /* Hook function related definitions. */
-#define configUSE_IDLE_HOOK                     1
-#define configUSE_TICK_HOOK                     1
-#define configCHECK_FOR_STACK_OVERFLOW          2 //使能堆栈溢出检测方法1/2
-#define configUSE_MALLOC_FAILED_HOOK            1 //1使能内存分配失败回调函数
+#define configUSE_IDLE_HOOK                     0
+#define configUSE_TICK_HOOK                     0
+#define configCHECK_FOR_STACK_OVERFLOW          0 //使能堆栈溢出检测方法1/2
+#define configUSE_MALLOC_FAILED_HOOK            0 //1使能内存分配失败回调函数
 #define configUSE_DAEMON_TASK_STARTUP_HOOK      0 //1使能守护定时器任务回调函数
 
 /* The full demo always has tasks to run so the tick will never be turned off.

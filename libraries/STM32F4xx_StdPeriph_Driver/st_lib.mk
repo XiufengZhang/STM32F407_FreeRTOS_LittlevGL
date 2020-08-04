@@ -1,0 +1,45 @@
+C_SOURCES += misc.c
+C_SOURCES += stm32f4xx_adc.c
+C_SOURCES += stm32f4xx_can.c
+C_SOURCES += stm32f4xx_cec.c
+C_SOURCES += stm32f4xx_crc.c
+C_SOURCES += stm32f4xx_cryp.c
+C_SOURCES += stm32f4xx_cryp_aes.c
+C_SOURCES += stm32f4xx_cryp_des.c
+C_SOURCES += stm32f4xx_cryp_tdes.c
+C_SOURCES += stm32f4xx_dac.c
+C_SOURCES += stm32f4xx_dbgmcu.c
+C_SOURCES += stm32f4xx_dcmi.c
+C_SOURCES += stm32f4xx_dfsdm.c
+C_SOURCES += stm32f4xx_dma.c
+C_SOURCES += stm32f4xx_dsi.c
+C_SOURCES += stm32f4xx_exti.c
+C_SOURCES += stm32f4xx_flash.c
+C_SOURCES += stm32f4xx_flash_ramfunc.c
+C_SOURCES += stm32f4xx_fmpi2c.c
+C_SOURCES += stm32f4xx_fsmc.c
+C_SOURCES += stm32f4xx_gpio.c
+C_SOURCES += stm32f4xx_hash.c
+C_SOURCES += stm32f4xx_hash_md5.c
+C_SOURCES += stm32f4xx_hash_sha1.c
+C_SOURCES += stm32f4xx_iwdg.c
+C_SOURCES += stm32f4xx_lptim.c
+C_SOURCES += stm32f4xx_pwr.c
+C_SOURCES += stm32f4xx_qspi.c
+C_SOURCES += stm32f4xx_rcc.c
+C_SOURCES += stm32f4xx_rng.c
+C_SOURCES += stm32f4xx_rtc.c
+C_SOURCES += stm32f4xx_sai.c
+C_SOURCES += stm32f4xx_sdio.c
+C_SOURCES += stm32f4xx_spdifrx.c
+C_SOURCES += stm32f4xx_spi.c
+C_SOURCES += stm32f4xx_syscfg.c
+C_SOURCES += stm32f4xx_tim.c
+C_SOURCES += stm32f4xx_usart.c
+C_SOURCES += stm32f4xx_wwdg.c
+
+DEPPATH += --dep-path $(LIB_DIR)/$(ST_LIB_DIR)/src
+# Makefile文件中的特殊变量,作用在在依赖文件上,如果当前目录找不到就到VPATH下去找 
+VPATH += :$(LIB_DIR)/$(ST_LIB_DIR)/src
+
+C_INCLUDES += -I$(LIB_DIR)/$(ST_LIB_DIR)/inc

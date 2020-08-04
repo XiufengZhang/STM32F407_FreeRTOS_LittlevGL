@@ -2,28 +2,47 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}/"//指定命令执行所在路径
+    },
     "tasks": [
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make clean"
+            // "args": [
+            //     "${file}",
+            //     "-o",
+            //     "${fileDirname}/${fileBasenameNoExtension}.exe",
+            //     "-g",
+            //     "-Wall",
+            //     "-static-libgcc",
+            //     "-fexec-charset=GBK",
+            //     "-finput-charset=UTF-8"
+            // ],
+            // "group": {
+            //     "kind": "build",
+            //     "isDefault": true
+            // },
+            // "problemMatcher": [
+            //     "$gcc"
+            // ]
+            // "dependsOn":["Compile"],///指定，在执行Load之前，需先执行make
+        },
         {
             "label": "Compile",
             "type": "shell",
-            "command": "g++",
-            "args": [
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.exe",
-                "-g",
-                "-Wall",
-                "-static-libgcc",
-                "-fexec-charset=GBK",
-                "-finput-charset=UTF-8"
-            ],
+            "command": "make GCC_PATH=/opt/gcc-arm-none-eabi-9-2020-q2-update/bin",
+            "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            }
+        },
+        {
+            "label": "Load",
+            "type": "shell",
+            "command": "make GCC_PATH=/opt/gcc-arm-none-eabi-9-2020-q2-update/bin gdb_load"
         }
     ]
 }
