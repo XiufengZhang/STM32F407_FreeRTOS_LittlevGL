@@ -38,8 +38,8 @@ C_SOURCES += stm32f4xx_tim.c
 C_SOURCES += stm32f4xx_usart.c
 C_SOURCES += stm32f4xx_wwdg.c
 
-DEPPATH += --dep-path $(LIB_DIR)/$(ST_LIB_DIR)/src
+DEPPATH += --dep-path $(ST_LIB_DIR)/src
 # Makefile文件中的特殊变量,作用在在依赖文件上,如果当前目录找不到就到VPATH下去找 
-VPATH += :$(LIB_DIR)/$(ST_LIB_DIR)/src
+VPATH += :$(ST_LIB_DIR)/src
 
-C_INCLUDES += -I$(LIB_DIR)/$(ST_LIB_DIR)/inc
+C_INCLUDES += -I$(ST_LIB_DIR)/inc

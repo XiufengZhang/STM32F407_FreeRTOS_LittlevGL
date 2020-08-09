@@ -17,6 +17,11 @@ MCU型号：STM32F407ZG
 ***
 ## 修改记录
 
+**v0.0.0**
+
+1. 新建工程 增加.mk文件实现makefile嵌套
+2. 添加littlefs freeRTOS littleVgl
+
 **v1.0.0**
 
 1. 新建工程

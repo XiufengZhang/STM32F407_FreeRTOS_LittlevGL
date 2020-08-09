@@ -37,12 +37,6 @@ endif
 # Build path
 BUILD_DIR = build
 
-# LIB_DIR ?= ${shell pwd}/libraries
-LIB_DIR ?= libraries
-DRIVER_DIR ?= drivers
-FS_DIR ?= fs
-RTOS_DIR ?= rtos
-
 ######################################
 # source
 ######################################
@@ -136,9 +130,17 @@ C_INCLUDES ?=  \
 -Isystem \
 -Isystem/include
 
-include libraries/lib.mk
-include fs/lfs.mk
-include rtos/rtos.mk
+# LIB_DIR ?= ${shell pwd}/libraries
+DRI_DIR ?= drivers
+LIB_DIR ?= libraries
+FS_DIR ?= fs
+GUI_DIR ?= gui
+RTOS_DIR ?= rtos
+# include $(DRI_DIR)/drivers.mk
+include $(LIB_DIR)/lib.mk
+include $(FS_DIR)/lfs.mk
+include $(GUI_DIR)/gui.mk
+include $(RTOS_DIR)/rtos.mk
 
 # compile gcc flags
 # compile gcc flags
