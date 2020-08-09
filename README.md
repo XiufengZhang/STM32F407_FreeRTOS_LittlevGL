@@ -1,4 +1,4 @@
-# STM32F407_Optical_GUI
+# STM32F407_FreeRTOS_littleVgl
 
 ## 工程说明
 MCU型号：STM32F407ZG  
