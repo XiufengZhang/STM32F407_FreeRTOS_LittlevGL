@@ -1,4 +1,4 @@
-# STM32F407_FreeRTOS_littleVgl
+# STM32F407_FreeRTOS_LittlevGL
 
 ## 工程说明
 MCU型号：STM32F407ZG  
