@@ -308,6 +308,9 @@ ErrorStatus SSDLCD_Init(void)
         TempData[0] = 0x01;
         TempData[1] = 0x01;
         SSDLCD_WriteCommandData(SSD_set_gpio_conf, TempData, 2); //GPIO设置 0x00B8
+        TempData[0] = 0x00;
+        SSDLCD_WriteCommandData(SSD_set_gpio_value, TempData, 1); //GPIO0输出低电平
+        STM32Delay_ms(5);//Display ON/OFF control 内部一般上拉,低电平复位,高电平工作;脉冲宽度1ms以上
         TempData[0] = 0x01;
         SSDLCD_WriteCommandData(SSD_set_gpio_value, TempData, 1); //GPIO0输出高电平
 

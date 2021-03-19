@@ -607,11 +607,13 @@ void SPI_FLASH_DataRead(void)
 
     memcpy(Flash_DeviceSN, Flash_DataArray, Flash_SN_NUMBER);
 
+    #ifdef CME_303
     memcpy(&Flash_DeviceType, Flash_DataArray + Flash_SN_NUMBER, sizeof(uint8_t));
     if (Flash_DeviceType > 1)
     {
         Flash_DeviceType = 0;
     }
+    #endif
 
     memcpy(&Flash_Language, Flash_DataArray + Flash_SN_NUMBER + sizeof(uint8_t), sizeof(uint8_t));
     if (Flash_Language > 1)

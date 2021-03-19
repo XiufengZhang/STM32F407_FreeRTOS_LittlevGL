@@ -40,7 +40,6 @@
                 "__VFP_FP__",
                 "__FPU_PRESENT=1",
                 "__GNUC__",
-                "GCC_ARM_CM4F",
                 "LV_CONF_INCLUDE_SIMPLE"
             ],
             "compilerPath": "/opt/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc",

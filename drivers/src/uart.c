@@ -39,8 +39,9 @@ uint8_t UART_RemoteAddr = 0;
 
 char UART_FilterDescrip[8][8] = {};
 
-uint8_t UART_ShutAMAU = 0;                                                                                 //快门手动自动状态 0手动 1自动，本地使用变量
-uint8_t UART_ShutOnOff = 0;                                                                                //快门运行停止，0停止 1运行，本地使用变量
+uint8_t UART_Light = 0;                                                                                    //快门运行停止，0停止 1运行，本地使用变量    //快门运行停止，0停止 1运行，本地使用变量
+uint8_t UART_ShutAMAU = 0;                                                                                 //快门手动自动状态 0手动 1自动，本地使用变量  //快门手动自动状态 0手动 1自动，本地使用变量
+uint8_t UART_Shut = 0;                                                                                     //快门运行停止，0停止 1运行，本地使用变量    //快门运行停止，0停止 1运行，本地使用变量
 SysComState_TypeDef SystemState = {.State_Main = SYSTEM_INIT, .State_Minor = INIT_IDLE, .State_Count = 0}; //标识系统当前状态，根据状态不同串口接收数据处理不同。
 
 /**
@@ -490,7 +491,7 @@ static void USART_CommunicationStateSet(void)
 }
 
 /**
-  * @brief  系统发送指令
+  * @brief  系统发送指令 USART_ComSendTimer USART_ComSendFirst USART_ComSendCyclic 调用此函数
   * @param  pSysState 结构体指针 保存当前发送指令的状态.
   * @retval None.
   */
@@ -631,8 +632,8 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                     pSysState->State_Minor = INIT_IDLE;
                     pSysState->State_Count = 0;
                     DelTimer(TimerId);
-                    // HomeWMRefresh();
-                    // WelcomeToHome();
+                    HomeWMRefresh();
+                    WelcomeToHome();
                 }
             }
             else
@@ -670,7 +671,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                     pSysState->State_Minor = 0;
                     pSysState->State_Count = 0;
                     DelTimer(TimerId);
-                    // HomeWMRefresh();
+                    HomeWMRefresh();
                 }
             }
             else
@@ -685,7 +686,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(TimerId);
-                // HomeWMRefresh();
+                HomeWMRefresh();
             }
             else
             {
@@ -694,7 +695,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
             break;
         default:
             DelTimer(TimerId);
-            // HomeWMRefresh();
+            HomeWMRefresh();
             break;
         }
     }
@@ -705,7 +706,7 @@ static void USART_ComSendTimer(uint8_t TimerId, void *arg)
 }
 
 /**
-  * @brief  系统首次发送指令
+  * @brief  串口发送指令, GUI层面调用
   * @param  pSysState 结构体指针 保存当前发送指令的状态.
   * @retval None.
   */
@@ -746,14 +747,15 @@ static void USART_ComSendFirst(SysComState_TypeDef *pSysState)
             switch (pSysState->State_Minor)
             {
             case WORK_LIGHT:
-                if (UART_LightStepStatus == 0)
-                {
-                    pSysState->State_Minor = WORK_LIGHT_ON;
-                }
-                else
+                if (UART_Light)
                 {
                     pSysState->State_Minor = WORK_LIGHT_OFF;
                 }
+                else
+                {
+                    pSysState->State_Minor = WORK_LIGHT_ON;
+                }
+                UART_Light = !UART_Light;
                 pSysState->State_Count = 0;
                 USART_ComSend(pSysState);
                 AddTimer(0, EXPIRE_ORDERTIME, USART_ComSendTimer, (void *)pSysState); //增加超时定时器
@@ -767,7 +769,7 @@ static void USART_ComSendFirst(SysComState_TypeDef *pSysState)
             case WORK_SHUTTER:
                 if (UART_ShutAMAU)
                 {
-                    if (UART_ShutOnOff)
+                    if (UART_Shut)
                     {
                         pSysState->State_Minor = WORK_SHUTTER_AMOFF;
                     }
@@ -778,7 +780,7 @@ static void USART_ComSendFirst(SysComState_TypeDef *pSysState)
                 }
                 else
                 {
-                    if (UART_ShutOnOff)
+                    if (UART_Shut)
                     {
                         pSysState->State_Minor = WORK_SHUTTER_AMOFF;
                     }
@@ -787,7 +789,7 @@ static void USART_ComSendFirst(SysComState_TypeDef *pSysState)
                         pSysState->State_Minor = WORK_SHUTTER_AMON;
                     }
                 }
-                UART_ShutOnOff = !UART_ShutOnOff;
+                UART_Shut = !UART_Shut;
                 pSysState->State_Count = 0;
                 USART_ComSend(pSysState);
                 AddTimer(0, EXPIRE_ORDERTIME, USART_ComSendTimer, (void *)pSysState); //增加超时定时器
@@ -802,7 +804,7 @@ static void USART_ComSendFirst(SysComState_TypeDef *pSysState)
 }
 
 /**
-  * @brief  系统循环发送指令
+  * @brief  串口接受数据后处理函数, 可能会调用串口发送指令
   * @param  pSysState 结构体指针 保存当前发送指令的状态.
   * @retval None.
   */
@@ -826,8 +828,8 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(0);
-                // HomeWMRefresh();
-                // WelcomeToHome();
+                HomeWMRefresh();
+                WelcomeToHome();
             }
             break;
         case SYSTEM_SETTINGS:
@@ -861,7 +863,7 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
                 pSysState->State_Minor = 0;
                 pSysState->State_Count = 0;
                 DelTimer(0);
-                // HomeWMRefresh();
+                HomeWMRefresh();
             }
             break;
         case SYSTEM_WORK:
@@ -869,11 +871,11 @@ static void USART_ComSendCyclic(SysComState_TypeDef *pSysState)
             pSysState->State_Minor = 0;
             pSysState->State_Count = 0;
             DelTimer(0);
-            // HomeWMRefresh();
+            HomeWMRefresh();
             break;
         default:
             DelTimer(0);
-            // HomeWMRefresh();
+            HomeWMRefresh();
             break;
         }
     }
@@ -1016,7 +1018,7 @@ void USART1_ReadDataProce(void)
             }
             else if (memcmp(UART1ReceData + strlen(USART_LIGHT), LIGHT_INTE, strlen(LIGHT_INTE)) == 0)
             {
-                sscanf(UART1ReceData + strlen(USART_LIGHT) + strlen(LIGHT_INTE) + strlen(USART_SPACE), "%hhu", &UART_LightIntensity);
+                // sscanf(UART1ReceData + strlen(USART_LIGHT) + strlen(LIGHT_INTE) + strlen(USART_SPACE), "%hhu", &UART_LightIntensity);
                 USART_ComSendCyclic(&SystemState);
             }
             else if (memcmp(UART1ReceData + strlen(USART_LIGHT), LIGHT_TIME, strlen(LIGHT_TIME)) == 0)

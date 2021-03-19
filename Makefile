@@ -44,19 +44,14 @@ BUILD_DIR = build
 C_SOURCES ?=  \
 app/main.c \
 app/stm32f4xx_it.c \
-drivers/src/clk.c \
-drivers/src/iwdg.c \
-drivers/src/gpio.c \
 drivers/src/ssdlcd.c \
 drivers/src/fttouch.c \
 drivers/src/gttouch.c \
 drivers/src/tsctouch.c \
 drivers/src/spi.c \
 drivers/src/spiflash.c \
-drivers/src/timer.c \
 drivers/src/uart.c \
 system/system_stm32f4xx.c
-
 
 # ASM sources
 ASM_SOURCES =  \
@@ -113,8 +108,14 @@ C_DEFS =  \
 -DARM_MATH_MATRIX_CHECK \
 -D__VFP_FP__ \
 -D__FPU_PRESENT=1 \
--DGCC_ARM_CM4F\
--DLV_CONF_INCLUDE_SIMPLE
+-DLV_CONF_INCLUDE_SIMPLE \
+-DSOFTWARE_VER=\"$(VERSION)\"
+
+ifeq ($(TARGET_NAME), CME_S1000)
+C_DEFS += -DCME_303
+else ifeq ($(TARGET_NAME), CME_LOW)
+C_DEFS += -DCME_LOW
+endif
 
 # AS includes
 AS_INCLUDES = \
@@ -126,7 +127,6 @@ AS_INCLUDES = \
 C_INCLUDES ?=  \
 -I. \
 -Iapp \
--Idrivers/inc \
 -Isystem \
 -Isystem/include
 
@@ -136,13 +136,12 @@ LIB_DIR ?= libraries
 FS_DIR ?= fs
 GUI_DIR ?= gui
 RTOS_DIR ?= rtos
-# include $(DRI_DIR)/drivers.mk
+include $(DRI_DIR)/drivers.mk
 include $(LIB_DIR)/lib.mk
 include $(FS_DIR)/lfs.mk
 include $(GUI_DIR)/gui.mk
 include $(RTOS_DIR)/rtos.mk
 
-# compile gcc flags
 # compile gcc flags
 # -Werror 把所有警告信息转为错误
 # -Wno-unused-parameter 与-Werror连用,忽略-unused-parameter警告所导致的错误,本身并不能忽略警告
@@ -168,8 +167,8 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 LDSCRIPT = system/gcc_link/STM32F407ZGTx_FLASH_ExtSRAM.ld
 
 # libraries
-LIBS = -lc -lm -lnosys
-LIBDIR =
+LIBS = -lc -lm -lnosys 
+LIBDIR = 
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all

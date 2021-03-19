@@ -9,7 +9,7 @@ extern "C"
 #define USART1BUFFERNUM 30 //USART1接收发送最大字节数
 #define USART2BUFFERNUM 30 //USART2接收发送最大字节数
 
-#define SOFTWARE_VER "1.3.0" //版本号1.2.0
+// #define SOFTWARE_VER "1.0.0" //版本号在makefile文件中定义
 
 #define USART_END "\r\n"
 #define USART_SPACE " "
@@ -20,19 +20,25 @@ extern "C"
 #define SYSTEM_VERSION ":VERSION"
 #define SYSTEM_STATE ":STATE"
 
+#ifdef CME_LOW
+#define USART_LIGHT ":LIGH"
+#else
 #define USART_LIGHT ":LIGHT"
+#endif
 #define LIGHT_STATE ":STATE"
 #define LIGHT_POWER_ON ":POWER_ON"
 #define LIGHT_POWER_OFF ":POWER_OFF"
 #define LIGHT_INTE ":INTE"
 #define LIGHT_INTE_SET ":INTE_SET"
 #define LIGHT_INTE_READ ":INTE_READ"
-#define LIGHT_TIME ":TIME"
+#define LIGHT_TIME ":TIME_LENG"
 #define LIGHT_TIME_READ ":TIME_READ"
 
-#define LIGHT_TIME_READ ":TIME_READ"
-
+#ifdef CME_LOW
+#define USART_FILTER ":FILTE"
+#else
 #define USART_FILTER ":FILTER"
+#endif
 #define FILTER_STATE ":STATE"
 #define FILTER_POSITION_SET ":POSITION_SET"
 #define FILTER_DESCR ":DESCR"
@@ -44,7 +50,7 @@ extern "C"
 #define SHUTER_MA_OFF ":MA_OFF"
 #define SHUTER_AU_ON ":AU_ON"
 #define SHUTER_AU_TIME ":AU_TIME"
-#define SHUTER_TIME ":TIME"
+#define SHUTER_TIME ":TIME_LENG"
 #define SHUTER_TIME_WRITE ":TIME_WRITE"
 #define SHUTER_TIME_READ ":TIME_READ"
 
@@ -80,9 +86,9 @@ extern "C"
     typedef struct
     {
         uint8_t State_Main;
-        uint8_t State_Minor;
-        uint8_t State_Count;
-        uint8_t SettingsMask;
+        uint8_t State_Minor; //初始化时查询指令计数
+        uint8_t State_Count; //记录重发次数
+        uint8_t SettingsMask;//记录需要设置哪些参数
     } SysComState_TypeDef;
 
     //定义系统状态
@@ -176,7 +182,6 @@ extern "C"
     extern char UART_FilterDescrip[8][8];
 
     extern uint8_t UART_ShutAMAU;  //快门手动自动状态 0手动 1自动，本地使用变量
-    extern uint8_t UART_ShutOnOff; //快门运行停止，0停止 1运行，本地使用变量
     extern SysComState_TypeDef SystemState;
 
     void UART1Init(void);
